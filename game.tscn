@@ -1,21 +1,47 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://PlayerBody.gd" type="Script" id=2]
 [ext_resource path="res://ship_icon.png" type="Texture" id=3]
 
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 191.947, 191.834 )
+
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
-extents = Vector2( 30, 20 )
+extents = Vector2( 30, 25 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 24.6613, 17.5917 )
 
 [node name="Node" type="Node" index="0"]
 
-[node name="icon" type="Sprite" parent="." index="0"]
+[node name="StaticBody2D" type="StaticBody2D" parent="." index="0"]
 
-position = Vector2( 193.54, 232.86 )
+position = Vector2( 265.191, 222.221 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 0
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+_sections_unfolded = [ "Collision" ]
+
+[node name="icon" type="Sprite" parent="StaticBody2D" index="0"]
+
 scale = Vector2( 6.04777, 6.09029 )
 texture = ExtResource( 1 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" index="1"]
+
+shape = SubResource( 2 )
 
 [node name="icon2" type="Sprite" parent="." index="1"]
 
@@ -39,11 +65,11 @@ collision_layer = 1
 collision_mask = 1
 collision/safe_margin = 0.08
 script = ExtResource( 2 )
-_sections_unfolded = [ "Angular", "Applied Forces" ]
+_sections_unfolded = [ "Angular", "Applied Forces", "Collision", "collision" ]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Body" index="0"]
 
-position = Vector2( 0, -10 )
+position = Vector2( -1, -10 )
 shape = SubResource( 1 )
 _sections_unfolded = [ "Transform" ]
 
@@ -76,5 +102,27 @@ editor_draw_drag_margin = false
 
 texture = ExtResource( 3 )
 _sections_unfolded = [ "Transform" ]
+
+[node name="Thrust_zone" type="Area2D" parent="Player/Body" index="3"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+collision_layer = 0
+collision_mask = 2
+audio_bus_override = false
+audio_bus_name = "Master"
+_sections_unfolded = [ "Collision" ]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Body/Thrust_zone" index="0"]
+
+position = Vector2( -0.790588, 25.825 )
+shape = SubResource( 3 )
+
+[connection signal="body_entered" from="Player/Body/Thrust_zone" to="Player/Body" method="_on_Thrust_zone_entered"]
+
+[connection signal="body_exited" from="Player/Body/Thrust_zone" to="Player/Body" method="_on_Thrust_zone_exited"]
 
 
