@@ -1,14 +1,25 @@
 extends KinematicBody2D
 
+const GRAVITY = 150
+
 var MAX_SPEED = 400
-const ROT_SPEED = 3.5
-const FRICTION = -0.65
-var THRUST = 600
+const ROT_SPEED = 2.5
+const FRICTION = -0.8 #-0.65
+var DEFAULT_THRUST = 400
 
 var velocity = Vector2()
 var acceleration = Vector2()
 
+onready var thrust_ray = get_node("RayCast2D")
+
 func _physics_process(delta):
+	
+	var THRUST = DEFAULT_THRUST
+	if thrust_ray.is_colliding():
+		var col_point = thrust_ray.get_collision_point()
+		var distance = position.distance_to(col_point)
+		THRUST += 6000/distance 
+	print(THRUST)
 	if Input.is_action_pressed("LEFT") and Input.is_action_pressed("RIGHT"):
 		acceleration = Vector2()
 	else:
@@ -19,31 +30,25 @@ func _physics_process(delta):
 		rotation += ROT_SPEED * delta
 
 	acceleration += velocity * FRICTION
+	acceleration.y += GRAVITY
 	velocity += acceleration * delta
-	velocity = velocity.clamped(MAX_SPEED)
-	#position += velocity * delta
+	#velocity = velocity.clamped(MAX_SPEED)
 	var col = move_and_collide(velocity * delta)
 	if col:
 		var reflect = col.remainder.bounce(col.normal)
-		velocity = velocity.bounce(col.normal)*0.1
+		velocity = velocity.bounce(col.normal)*0.5
 		move_and_collide(reflect)
 
 
-func _on_Body_area_entered(area):
-	print("ENTERED")
-	THRUST = 0
-	rotation *= -1
-	velocity *= -1 * 1
+#func _on_Body_area_entered(area):
+#	print("ENTERED")
+#	THRUST = 0
+#	rotation *= -1
+#	velocity *= -1 * 1
+#
+#
+#func _on_Body_area_exited(area):
+#	print("EXITED")
+#	THRUST = 400
 
 
-func _on_Body_area_exited(area):
-	print("EXITED")
-	THRUST = 600
-
-
-func _on_Thrust_zone_exited(area):
-	MAX_SPEED = 400
-
-
-func _on_Thrust_zone_entered(body):
-	MAX_SPEED = 1000
