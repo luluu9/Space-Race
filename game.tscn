@@ -1,29 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://PlayerBody.gd" type="Script" id=2]
-[ext_resource path="res://ship_icon.png" type="Texture" id=3]
-
-[sub_resource type="RectangleShape2D" id=2]
-
-custom_solver_bias = 0.0
-extents = Vector2( 191.947, 191.834 )
-
-[sub_resource type="RectangleShape2D" id=1]
-
-custom_solver_bias = 0.0
-extents = Vector2( 30, 25 )
-
-[sub_resource type="RectangleShape2D" id=3]
-
-custom_solver_bias = 0.0
-extents = Vector2( 24.6613, 17.5917 )
+[ext_resource path="res://game.gd" type="Script" id=1]
+[ext_resource path="res://Map.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://PlayerBody.gd" type="Script" id=4]
+[ext_resource path="res://ship_icon.png" type="Texture" id=5]
 
 [node name="Node" type="Node" index="0"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="." index="0"]
+script = ExtResource( 1 )
 
-position = Vector2( 265.191, 222.221 )
+[node name="Map" type="StaticBody2D" parent="." index="0"]
+
+position = Vector2( 99.8983, 649.821 )
 input_pickable = false
 collision_layer = 1
 collision_mask = 0
@@ -31,29 +20,30 @@ constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
+script = ExtResource( 2 )
 _sections_unfolded = [ "Collision" ]
 
-[node name="icon" type="Sprite" parent="StaticBody2D" index="0"]
+[node name="Line2D" type="Line2D" parent="Map" index="0"]
 
-scale = Vector2( 6.04777, 6.09029 )
-texture = ExtResource( 1 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" index="1"]
-
-shape = SubResource( 2 )
+points = PoolVector2Array( 506.723, -163.011, 588.336, -188.122, 908.536, -286.645, 1066.17, -410.28, 1118.71, -515.369, 1140.35, -614.277, 1124.21, -705.065, 1097.55, -766.581, 1060.64, -813.744, 1013.48, -846.553, 962.218, -867.058, 904.802, -877.311, 855.589, -879.361, 800.225, -885.513, 753.062, -889.614, 732.557, -914.22, 701.799, -953.181, 681.293, -990.091, 660.788, -1022.9, 633.208, -1077.66, 607.584, -1116.85, 604.569, -1145.49, 598.54, -1172.62, 589.496, -1202.77, 577.437, -1214.82, 563.871, -1231.4, 536.739, -1243.46, 509.607, -1251, 485.49, -1257.03, 447.109, -1246.48, 362.698, -1216.33, 312.956, -1186.18, 275.272, -1146.99, 228.545, -1103.28, 213.471, -1036.96, 184.832, -981.187, 123.694, -920.103, -7.21735, -877.305, -105.401, -877.305, -158.269, -852.13, -208.62, -824.437, -248.9, -781.639, -289.181, -721.219, -354.636, -683.456, -467.438, -654.899, -583.313, -627.634, -617.144, -584.465, -644.409, -504.942, -644.409, -454.957, -646.681, -391.339, -642.137, -336.809, -614.998, 50.2482, -522.945, 156.249, -318.274, 262.993, -108.037, 326.064, -11.3286, 347.088, 119.018, 359.702, 245.16, 363.907, 354.483, 401.75, 497.444, 435.387, 657.224, 460.616, 965.768, 466.806, 1120.64, 471.969, 1337.45, 471.969, 1554.27, 477.131, 1678.17, 440.995, 1786.58, 384.209, 1817.55, 301.612, 1838.2, 177.717, 1807.22, 38.3348, 1729.79, -95.8853, 1662.68, -173.32, 1538.78, -219.781, 1430.38, -240.43, 1285.83, -245.592, 1177.42, -219.781, 1058.69, -178.482, 872.847, -132.021, 774.763, -111.372, 650.868, -90.723, 537.297, -80.3983, 428.888, -85.5606, 512.099, -160.834 )
+width = 10.0
+default_color = Color( 0.4, 0.5, 1, 1 )
+texture_mode = -290646694
+sharp_limit = 0.0
+round_precision = 10
+_sections_unfolded = [ "Border", "Capping", "Transform" ]
 
 [node name="icon2" type="Sprite" parent="." index="1"]
 
 position = Vector2( 854.891, 105.234 )
 scale = Vector2( 2.14027, 2.12471 )
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 
 [node name="icon3" type="Sprite" parent="." index="2"]
 
 position = Vector2( 932.838, 507.57 )
 scale = Vector2( 3.1824, 2.39449 )
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 
 [node name="Player" type="Node" parent="." index="3"]
 
@@ -61,19 +51,13 @@ texture = ExtResource( 1 )
 
 position = Vector2( 648.031, 300.633 )
 input_pickable = false
-collision_layer = 1
+collision_layer = 0
 collision_mask = 1
 collision/safe_margin = 0.08
-script = ExtResource( 2 )
+script = ExtResource( 4 )
 _sections_unfolded = [ "Angular", "Applied Forces", "Collision", "collision" ]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Body" index="0"]
-
-position = Vector2( -1, -10 )
-shape = SubResource( 1 )
-_sections_unfolded = [ "Transform" ]
-
-[node name="Camera2D" type="Camera2D" parent="Player/Body" index="1"]
+[node name="Camera2D" type="Camera2D" parent="Player/Body" index="0"]
 
 anchor_mode = 1
 rotating = false
@@ -98,31 +82,22 @@ editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
 
-[node name="ship_icon" type="Sprite" parent="Player/Body" index="2"]
+[node name="ship_icon" type="Sprite" parent="Player/Body" index="1"]
 
-texture = ExtResource( 3 )
+scale = Vector2( 0.5, 1 )
+texture = ExtResource( 5 )
 _sections_unfolded = [ "Transform" ]
 
-[node name="Thrust_zone" type="Area2D" parent="Player/Body" index="3"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Player/Body" index="2"]
 
-input_pickable = true
-gravity_vec = Vector2( 0, 1 )
-gravity = 98.0
-linear_damp = 0.1
-angular_damp = 1.0
-collision_layer = 0
-collision_mask = 2
-audio_bus_override = false
-audio_bus_name = "Master"
-_sections_unfolded = [ "Collision" ]
+build_mode = 0
+polygon = PoolVector2Array( -0.222351, -32.2742, -11.7416, 10.6249, 10.8997, 11.4193 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Body/Thrust_zone" index="0"]
+[node name="RayCast2D" type="RayCast2D" parent="Player/Body" index="3"]
 
-position = Vector2( -0.790588, 25.825 )
-shape = SubResource( 3 )
-
-[connection signal="body_entered" from="Player/Body/Thrust_zone" to="Player/Body" method="_on_Thrust_zone_entered"]
-
-[connection signal="body_exited" from="Player/Body/Thrust_zone" to="Player/Body" method="_on_Thrust_zone_exited"]
+enabled = true
+exclude_parent = true
+cast_to = Vector2( 0, 75 )
+collision_mask = 1
 
 
