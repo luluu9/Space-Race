@@ -1,0 +1,160 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://bezierCurve.gd" type="Script" id=1]
+
+[node name="root" type="Node"]
+__meta__ = {
+"__editor_plugin_screen__": "Script",
+"_edit_lock_": true
+}
+
+[node name="Background" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, 140 )
+centered = false
+
+[node name="bezier" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="Point1" type="Node2D" parent="bezier"]
+position = Vector2( 100, 150 )
+
+[node name="A" type="Label" parent="bezier/Point1"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "A"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point2" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 500, 150 )
+
+[node name="B" type="Label" parent="bezier/Point2"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "B"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point3" type="Node2D" parent="bezier"]
+
+[node name="A" type="Label" parent="bezier/Point3"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "A"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point4" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 228.935, 382.36 )
+
+[node name="B" type="Label" parent="bezier/Point4"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "B"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point5" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 389.83, 471.239 )
+
+[node name="C" type="Label" parent="bezier/Point5"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "C"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point6" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 510.206, 220.617 )
+rotation = -0.000738709
+
+[node name="A" type="Label" parent="bezier/Point6"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "A"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point7" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 586.425, 494.842 )
+
+[node name="Ac" type="Label" parent="bezier/Point7"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "Ac"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point8" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 742.656, 395.956 )
+
+[node name="Bc" type="Label" parent="bezier/Point8"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "Bc"
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Point9" type="Node2D" parent="bezier"]
+editor/display_folded = true
+position = Vector2( 746.955, 200.375 )
+
+[node name="B1" type="Label" parent="bezier/Point9"]
+margin_left = -5.0
+margin_top = -25.0
+margin_right = 35.0
+margin_bottom = -11.0
+mouse_filter = 1
+size_flags_vertical = 0
+text = "B"
+__meta__ = {
+"_edit_lock_": true
+}
+
