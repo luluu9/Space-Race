@@ -34,7 +34,6 @@ func _unhandled_input(event):
 				position = (position - mouse_pos) * new_zoom / zoom + mouse_pos
 				zoom = new_zoom
 				update()
-			print(position)
 
 func draw_grid():
 	var res = get_viewport_rect().size
@@ -43,7 +42,7 @@ func draw_grid():
 	
 	var move_x = CURR_GAP - fposmod(position.x, CURR_GAP) 
 	for i in range(0, ceil(res.x / GAP / zoom.x)): # VERTICAL
-		var pos_x = i * CURR_GAP  + move_x
+		var pos_x = i * CURR_GAP + move_x
 		draw_line(Vector2(pos_x, 0), Vector2(pos_x, res.y), Color(0.4, 0.4, 0.4, 0.8), 1)
 	
 	CURR_GAP = GAP * zoom.y
@@ -54,22 +53,23 @@ func draw_grid():
 
 func get_snap_point(point):
 	var res = get_viewport_rect().size
-	res.x *= zoom.x
-	res.y *= zoom.y
+	res *= zoom
 	var CURR_GAP = GAP * zoom.x
 	
 	var snap_point = point
 	
-	var move_x = CURR_GAP - fposmod(position.x, CURR_GAP)
-	for i in range(0, ceil(res.x / CURR_GAP / zoom.x)): 
-		var pos_x =  (i * CURR_GAP + move_x) * zoom.x + position.x
+	var move_x = CURR_GAP - fposmod(position.x, CURR_GAP) 
+	for i in range(0, ceil(res.x / GAP / zoom.x)): # VERTICAL
+		var pos_x = i * CURR_GAP + move_x + position.x
 		if abs(pos_x - point.x) <= SNAP_MARGIN:
 			snap_point.x = pos_x
 			break
-
+	
+	CURR_GAP = GAP * zoom.y
 	var move_y = CURR_GAP - fposmod(position.y, CURR_GAP)
-	for i in range(0, ceil(res.y / CURR_GAP / zoom.y)):
-		var pos_y =  (i * CURR_GAP + move_y) * zoom.y + position.y
+	for i in range(0, ceil(res.y / GAP / zoom.y)): # HORIZONTAL
+		var pos_y = i * CURR_GAP + move_y + position.y
+		print(pos_y)
 		if abs(pos_y - point.y) <= SNAP_MARGIN:
 			snap_point.y = pos_y
 			break
