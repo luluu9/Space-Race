@@ -23,19 +23,26 @@ func _input(event):
 		current_map = StaticBody2D.new()
 		add_child(current_map)
 	
+	var mouse_pos = get_global_mouse_position()
+	
 	# CHANGE POSITION OF POINT
 	if pressed:
 		if selection != null:
-			selection.set_position(grid.get_snap_point(event.position))
+			selection.set_position(grid.get_snap_point(mouse_pos))
 			update()
 	
 	if event is InputEventMouseButton:
 		if event.pressed:
-			pressed = true
 			if current_bezier:
-				selection = get_point_on_cursor(event.position)
-				if selection == null and current_bezier.get_child_count() < 4: # max bezier points = 4
-					create_point()
+				selection = get_point_on_cursor(mouse_pos)
+				if event.button_index == BUTTON_LEFT:
+					pressed = true
+					if selection == null and current_bezier.get_child_count() < 4: # max bezier points = 4
+						create_point()
+				elif event.button_index == BUTTON_RIGHT:
+					if selection:
+						selection.free()
+						update()
 		else:
 			selection = null
 			pressed = false
@@ -55,6 +62,7 @@ func create_point():
 	current_bezier.add_child(point)
 	update()
 
+
 func save_map(map):
 	name_map(map)
 	pass
@@ -67,7 +75,6 @@ func name_map(map):
 func get_point_on_cursor(mouse_pos):
 	for bezier in current_map.get_children():
 		for point in bezier.get_children():
-			print(mouse_pos.distance_to(point.position))
 			if mouse_pos.distance_to(point.position) < SELECTION_DISTANCE:
 				return point
 	return null
