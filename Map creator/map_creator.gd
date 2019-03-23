@@ -12,16 +12,22 @@ var selection = null
 var pressed = false
 
 onready var grid = get_node("Camera2D")
+onready var popup = get_node("CenterContainer/Popup")
+onready var line_edit = get_node("CenterContainer/Popup/LineEdit")
+
+func _ready():
+	line_edit.connect("text_entered", self, "save_map")
+	create_map()
 
 func _input(event):
 	var ctrl = Input.is_key_pressed(KEY_CONTROL)
+	var save = Input.is_action_just_pressed("MAP_SAVE")
 	var create = Input.is_action_just_pressed("MAP_CREATE")
-	if ctrl and create:
+	if create:
 		if current_map:
 			create_bezier()
-	elif create:
-		current_map = StaticBody2D.new()
-		add_child(current_map)
+	if ctrl and save:
+		name_map()
 	
 	var mouse_pos = get_global_mouse_position()
 	
@@ -47,11 +53,21 @@ func _input(event):
 			selection = null
 			pressed = false
 
+func create_map():
+	if current_map:
+		current_map.queue_free()
+		update()
+	current_map = StaticBody2D.new()
+	add_child(current_map)
+
 func create_bezier():
 	var name = "bezier_" + str(current_map.get_child_count())
 	var bezier = Node2D.new()
 	bezier.name = name
+	
 	current_map.add_child(bezier)
+	bezier.set_owner(current_map) # for saving
+	
 	current_bezier = bezier
 
 func create_point():
@@ -60,16 +76,22 @@ func create_point():
 	point.name = name
 	point.position = grid.get_snap_point(get_global_mouse_position())
 	current_bezier.add_child(point)
+	point.set_owner(current_map) # for saving
 	update()
 
 
-func save_map(map):
-	name_map(map)
-	pass
+func save_map(map_name):
+	current_map.name = map_name
+	var packed_map = PackedScene.new()
+	packed_map.pack(current_map)
+	ResourceSaver.save("res://Maps/" + map_name + ".tscn", packed_map)
+	popup.hide()
+	create_map()
 
-# for naming map to save
-func name_map(map):
-	pass
+# for naming current map to save
+func name_map():
+	popup.popup_centered()
+
 
 # POINTS
 func get_point_on_cursor(mouse_pos):
