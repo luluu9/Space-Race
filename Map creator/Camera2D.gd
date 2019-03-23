@@ -10,57 +10,66 @@ var VECTOR_ZOOM = Vector2(0.5, 0.5)
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
+			var CURR_SPEED = SPEED * zoom.x
 			if event.scancode == KEY_W:
-				position.y -= SPEED
+				position.y -= CURR_SPEED
 			if event.scancode == KEY_S:
-				position.y += SPEED
+				position.y += CURR_SPEED
 			if event.scancode == KEY_A:
-				position.x -= SPEED
+				position.x -= CURR_SPEED
 			if event.scancode == KEY_D:
-				position.x += SPEED
+				position.x += CURR_SPEED
 			update()
 
 	if event is InputEventMouseButton:
 		if event.is_pressed():
-			if event.button_index == BUTTON_WHEEL_UP:
-				zoom /= VECTOR_ZOOM
+			var mouse_pos = get_global_mouse_position()
+			if event.button_index == BUTTON_WHEEL_UP: # ZOOM OUT
+				var new_zoom = zoom * VECTOR_ZOOM
+				position = (position - mouse_pos) * new_zoom / zoom + mouse_pos
+				zoom = new_zoom
 				update()
-			if event.button_index == BUTTON_WHEEL_DOWN:
-				zoom *= VECTOR_ZOOM
+			if event.button_index == BUTTON_WHEEL_DOWN: # ZOOM IN
+				var new_zoom = zoom / VECTOR_ZOOM
+				position = (position - mouse_pos) * new_zoom / zoom + mouse_pos
+				zoom = new_zoom
 				update()
+			print(position)
 
 func draw_grid():
 	var res = get_viewport_rect().size
-	res.x *= zoom.x
-	res.y *= zoom.y
-
-	var move_x = GAP - fposmod(position.x, GAP )
+	res *= zoom
+	var CURR_GAP = GAP * zoom.x
+	
+	var move_x = CURR_GAP - fposmod(position.x, CURR_GAP) 
 	for i in range(0, ceil(res.x / GAP / zoom.x)): # VERTICAL
-		var pos_x =  (i * GAP  + move_x) * zoom.x
+		var pos_x = i * CURR_GAP  + move_x
 		draw_line(Vector2(pos_x, 0), Vector2(pos_x, res.y), Color(0.4, 0.4, 0.4, 0.8), 1)
 	
-	var move_y = GAP - fposmod(position.y, GAP )
+	CURR_GAP = GAP * zoom.y
+	var move_y = CURR_GAP - fposmod(position.y, CURR_GAP)
 	for i in range(0, ceil(res.y / GAP / zoom.y)): # HORIZONTAL
-		var pos_y =  (i * GAP + move_y) * zoom.y
+		var pos_y = i * CURR_GAP + move_y
 		draw_line(Vector2(0, pos_y), Vector2(res.x, pos_y), Color(0.4, 0.4, 0.4, 0.8), 1)
 
 func get_snap_point(point):
 	var res = get_viewport_rect().size
 	res.x *= zoom.x
 	res.y *= zoom.y
+	var CURR_GAP = GAP * zoom.x
 	
 	var snap_point = point
 	
-	var move_x = GAP - fposmod(position.x, GAP)
-	for i in range(0, ceil(res.x / GAP / zoom.x)): 
-		var pos_x =  (i * GAP + move_x) * zoom.x + position.x
+	var move_x = CURR_GAP - fposmod(position.x, CURR_GAP)
+	for i in range(0, ceil(res.x / CURR_GAP / zoom.x)): 
+		var pos_x =  (i * CURR_GAP + move_x) * zoom.x + position.x
 		if abs(pos_x - point.x) <= SNAP_MARGIN:
 			snap_point.x = pos_x
 			break
 
-	var move_y = GAP - fposmod(position.y, GAP)
-	for i in range(0, ceil(res.y / GAP / zoom.y)):
-		var pos_y =  (i * GAP + move_y) * zoom.y + position.y
+	var move_y = CURR_GAP - fposmod(position.y, CURR_GAP)
+	for i in range(0, ceil(res.y / CURR_GAP / zoom.y)):
+		var pos_y =  (i * CURR_GAP + move_y) * zoom.y + position.y
 		if abs(pos_y - point.y) <= SNAP_MARGIN:
 			snap_point.y = pos_y
 			break
