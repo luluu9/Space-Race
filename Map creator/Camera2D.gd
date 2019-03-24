@@ -69,7 +69,6 @@ func get_snap_point(point):
 	var move_y = CURR_GAP - fposmod(position.y, CURR_GAP)
 	for i in range(0, ceil(res.y / GAP / zoom.y)): # HORIZONTAL
 		var pos_y = i * CURR_GAP + move_y + position.y
-		print(pos_y)
 		if abs(pos_y - point.y) <= SNAP_MARGIN:
 			snap_point.y = pos_y
 			break
