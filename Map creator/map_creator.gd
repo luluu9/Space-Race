@@ -128,11 +128,7 @@ func draw_bezier_2(A, B, C):
 
 	for p in range( STEPS ):
 		draw_line( points[p], points[p+1], Color( 1, 1, 0 ), WIDTH )
-	
-	draw_line( A, B, Color( 1, 1, 1, 0.5 ), 1 )
-	draw_line( B, C, Color( 1, 1, 1, 0.5 ), 1 )
 
-	
 func draw_bezier_3(A, cA, cB, B):
 	var points = []
 	var point = Vector2()
@@ -145,15 +141,7 @@ func draw_bezier_3(A, cA, cB, B):
 	
 	# create collision shape
 	# create_collision_shape(points)
-	
-	# draw control lines
-	draw_line(  A, cA, Color( 1, 1, 1, 0.5 ), 1 )
-	draw_line( cB,  B, Color( 1, 1, 1, 0.5 ), 1 )
-	draw_line( cA, cB, Color( 1, 1, 1, 0.5 ), 1 )
 
-func draw_points(points): #helper
-	for point in points:
-		draw_circle( point.position, SELECTION_DISTANCE, Color( 1.0, 0.5, 0.5, 0.6 ) )
 
 func _draw():
 	if not current_map:
@@ -161,10 +149,28 @@ func _draw():
 	var beziers = current_map.get_children()
 	for bezier in beziers:
 		var points = bezier.get_children()
-		draw_points(points)
 		if len(points) == 2:
 			draw_bezier_1(points[0].position, points[1].position)
 		elif len(points) == 3:
 			draw_bezier_2(points[0].position, points[1].position, points[2].position)
 		elif len(points) == 4:
 			draw_bezier_3(points[0].position, points[1].position, points[2].position, points[3].position)
+	draw_helpers()
+
+
+# HELPERS
+
+func draw_helpers():
+	var beziers = current_map.get_children()
+	for bezier in beziers:
+		var points = bezier.get_children()
+		draw_points(points)
+		draw_helper_lines(points)
+
+func draw_points(points):
+	for point in points:
+		draw_circle( point.position, SELECTION_DISTANCE, Color( 1.0, 0.5, 0.5, 0.6 ) )
+
+func draw_helper_lines(points):
+	for i in range(len(points)-1):
+		draw_line(points[i].position, points[i+1].position, Color( 1, 1, 1, 0.5 ), 1 )
