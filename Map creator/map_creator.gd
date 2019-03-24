@@ -12,6 +12,7 @@ var selection = null
 var pressed = false
 
 onready var MAP_SCRIPT = load("res://Map creator/map.gd")
+onready var BEZIER_SCRIPT = load("res://Map creator/bezier.gd")
 
 onready var grid = get_node("Camera2D")
 onready var popup = get_node("CenterContainer/Popup")
@@ -61,11 +62,13 @@ func create_map():
 		update()
 	current_map = StaticBody2D.new()
 	current_map.set_script(MAP_SCRIPT)
+	
 	add_child(current_map)
 
 func create_bezier():
 	var name = "bezier_" + str(current_map.get_child_count())
 	var bezier = Node2D.new()
+	bezier.set_script(BEZIER_SCRIPT)
 	bezier.name = name
 	
 	current_map.add_child(bezier)
@@ -78,8 +81,10 @@ func create_point():
 	var point = Node2D.new()
 	point.name = name
 	point.position = grid.get_snap_point(get_global_mouse_position())
+	
 	current_bezier.add_child(point)
 	point.set_owner(current_map) # for saving
+	
 	update()
 
 func save_map(map_name):
@@ -97,8 +102,8 @@ func name_map():
 
 # POINTS
 func get_point_on_cursor(mouse_pos):
-	for bezier in current_map.get_children():
-		for point in bezier.get_children():
+	for bezier in current_map.get_beziers():
+		for point in bezier.get_children(): # i have to work on nodes, not points positions
 			if mouse_pos.distance_to(point.position) < SELECTION_DISTANCE:
 				return point
 	return null
@@ -112,16 +117,15 @@ func _draw():
 
 # HELPERS
 func draw_helpers():
-	var beziers = current_map.get_children()
-	for bezier in beziers:
-		var points = bezier.get_children()
+	for bezier in current_map.get_beziers():
+		var points = bezier.get_points()
 		draw_points(points)
 		draw_helper_lines(points)
 
 func draw_points(points):
 	for point in points:
-		draw_circle( point.position, SELECTION_DISTANCE, Color( 1.0, 0.5, 0.5, 0.6 ) )
+		draw_circle( point, SELECTION_DISTANCE, Color( 1.0, 0.5, 0.5, 0.6 ) )
 
 func draw_helper_lines(points):
 	for i in range(len(points)-1):
-		draw_line(points[i].position, points[i+1].position, Color( 1, 1, 1, 0.5 ), 1 )
+		draw_line(points[i], points[i+1], Color( 1, 1, 1, 0.5 ), 1 )
