@@ -1,12 +1,16 @@
+tool # must have for preview in editor
 extends StaticBody2D
 
-var STEPS = 100
+var STEPS = 25
 var WIDTH = 5
 
 onready var startpoint = get_node("startpoint")
 
 func _ready():
-	create_collision_shapes()
+	update()
+	if not Engine.editor_hint:
+		create_collision_shapes()
+
 
 func get_startpoint():
 	return startpoint.position
@@ -57,26 +61,20 @@ func draw_bezier(bezier_points):
 			draw_line(bezier_points[p], bezier_points[p+1], Color( 1, 1, 0 ), WIDTH )
 
 
-func create_collision_shape(points):
-	var pol_width = WIDTH/2
-	for i in range(1, points.size()):
-		var poly = CollisionPolygon2D.new()
-		var poly_points = PoolVector2Array()
-		var angle = points[i-1].angle_to_point(points[i])
-
-		var new_point = points[i-1] + Vector2(pol_width, pol_width).rotated(angle)
+func create_collision_shape(points): # https://godotengine.org/qa/23638/why-arent-there-bezier-curves-for-collision-shape-creation
+	var col = CollisionShape2D.new()
+	var shape = ConcavePolygonShape2D.new()
+	var poly_points = PoolVector2Array()
+	
+	for i in range(0, len(points)-1):
+		var new_point = points[i]
 		poly_points.append(new_point)
-
-		new_point = points[i] + Vector2(pol_width, pol_width).rotated(angle)
+		new_point = points[i+1]
 		poly_points.append(new_point)
-
-		new_point = points[i] - Vector2(pol_width, pol_width).rotated(angle)
-		poly_points.append(new_point)
-
-		new_point = points[i-1] - Vector2(pol_width, pol_width).rotated(angle)
-		poly_points.append(new_point)
-		poly.set_polygon(poly_points)
-		add_child(poly)
+	
+	shape.set_segments(poly_points)
+	col.set_shape(shape)
+	add_child(col)
 
 func _draw():
 	var beziers = self.get_beziers()

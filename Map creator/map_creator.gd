@@ -12,9 +12,6 @@ var current_map = null
 var current_bezier = null
 var current_startpoint = null
 
-var STEPS = 100
-var WIDTH = 5
-
 var SELECTION_DISTANCE = 9
 
 var selection = null
@@ -78,6 +75,7 @@ func create_map():
 		update()
 	current_map = StaticBody2D.new()
 	current_map.set_script(MAP_SCRIPT)
+	create_startpoint()
 	
 	add_child(current_map)
 

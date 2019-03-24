@@ -1,3 +1,4 @@
+tool # must have for preview in editor
 extends Node2D
 
 func get_points():
