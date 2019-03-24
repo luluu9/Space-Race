@@ -2,6 +2,7 @@ extends Node2D
 
 ### MAP CREATOR ###
 # To create new map save existing by CTRL+S
+# To create new bezier points use LMB
 # To create new bezier use N
 # To create spawnpoint use M
 
