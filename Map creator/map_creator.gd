@@ -5,6 +5,8 @@ extends Node2D
 # To create new bezier points use LMB
 # To create new bezier use N
 # To create spawnpoint use M
+# To delete bezier point use SHIFT+LMB
+# To change current bezier use RMB
 
 var current_map = null
 var current_bezier = null
@@ -31,6 +33,7 @@ func _ready():
 
 func _input(event):
 	var ctrl = Input.is_key_pressed(KEY_CONTROL)
+	var shift = Input.is_key_pressed(KEY_SHIFT)
 	var save = Input.is_action_just_pressed("MAP_SAVE")
 	var create = Input.is_action_just_pressed("MAP_CREATE")
 	var create_startpoint = Input.is_action_just_pressed("MAP_CSTARTPOINT")
@@ -54,14 +57,17 @@ func _input(event):
 		if event.pressed:
 			if current_bezier:
 				selection = get_point_on_cursor(mouse_pos)
-				if event.button_index == BUTTON_LEFT:
-					pressed = true
-					if selection == null and current_bezier.get_child_count() < 4: # max bezier points = 4
-						create_point()
-				elif event.button_index == BUTTON_RIGHT:
+				if event.button_index == BUTTON_LEFT and shift: # DELETE BEZIER POINT
 					if selection:
 						selection.free()
 						update()
+				elif event.button_index == BUTTON_LEFT: # ADD BEZIER POINT
+					pressed = true
+					if selection == null and current_bezier.get_child_count() < 4: # max bezier points = 4
+						create_point()
+				elif event.button_index == BUTTON_RIGHT:  # CHANGE CURRENT BEZIER
+					if selection:
+						current_bezier = selection.get_parent()
 		else:
 			selection = null
 			pressed = false
