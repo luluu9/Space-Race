@@ -1,5 +1,10 @@
 extends Node2D
 
+### MAP CREATOR ###
+# To create new map save existing by CTRL+S
+# To create new bezier use N
+# To create spawnpoint use M
+
 var current_map = null
 var current_bezier = null
 var current_startpoint = null
