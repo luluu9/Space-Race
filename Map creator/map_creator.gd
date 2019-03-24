@@ -2,6 +2,7 @@ extends Node2D
 
 var current_map = null
 var current_bezier = null
+var current_startpoint = null
 
 var STEPS = 100
 var WIDTH = 5
@@ -26,9 +27,12 @@ func _input(event):
 	var ctrl = Input.is_key_pressed(KEY_CONTROL)
 	var save = Input.is_action_just_pressed("MAP_SAVE")
 	var create = Input.is_action_just_pressed("MAP_CREATE")
+	var create_startpoint = Input.is_action_just_pressed("MAP_CSTARTPOINT")
 	if create:
 		if current_map:
 			create_bezier()
+	if create_startpoint:
+		create_startpoint()
 	if ctrl and save:
 		name_map()
 	
@@ -87,6 +91,18 @@ func create_point():
 	
 	update()
 
+func create_startpoint():
+	if current_startpoint:
+		current_startpoint.free()
+	current_startpoint = Node2D.new()
+	current_startpoint.name = "startpoint"
+	current_startpoint.position = grid.get_snap_point(get_global_mouse_position())
+	
+	current_map.add_child(current_startpoint)
+	current_startpoint.set_owner(current_map) # for saving
+	
+	update()
+
 func save_map(map_name):
 	current_map.name = map_name
 	var packed_map = PackedScene.new()
@@ -117,14 +133,19 @@ func _draw():
 
 # HELPERS
 func draw_helpers():
+	if current_startpoint:
+		draw_startpoint(current_startpoint.position)
 	for bezier in current_map.get_beziers():
 		var points = bezier.get_points()
 		draw_points(points)
 		draw_helper_lines(points)
 
+func draw_startpoint(point):
+	draw_circle(point, SELECTION_DISTANCE, Color("74f442"))
+
 func draw_points(points):
 	for point in points:
-		draw_circle( point, SELECTION_DISTANCE, Color( 1.0, 0.5, 0.5, 0.6 ) )
+		draw_circle(point, SELECTION_DISTANCE, Color(1.0, 0.5, 0.5, 0.6))
 
 func draw_helper_lines(points):
 	for i in range(len(points)-1):

@@ -3,8 +3,13 @@ extends StaticBody2D
 var STEPS = 100
 var WIDTH = 5
 
+onready var startpoint = get_node("startpoint")
+
 func _ready():
 	create_collision_shapes()
+
+func get_startpoint():
+	return startpoint.position
 
 func create_collision_shapes():
 	for bezier in get_beziers():
