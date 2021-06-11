@@ -13,7 +13,6 @@ var acceleration = Vector2()
 onready var thrust_ray = get_node("RayCast2D")
 
 func _physics_process(delta):
-	
 	var THRUST = DEFAULT_THRUST
 	if thrust_ray.is_colliding():
 		var col_point = thrust_ray.get_collision_point()
@@ -28,37 +27,13 @@ func _physics_process(delta):
 		rotation -= ROT_SPEED * delta
 	if Input.is_action_pressed("RIGHT"):
 		rotation += ROT_SPEED * delta
-	if Input.is_action_pressed("THRUST"):
-		MAX_SPEED = 1000
 
 	acceleration += velocity * FRICTION
 	acceleration.y += GRAVITY
 	velocity += acceleration * delta
-	#velocity = velocity.clamped(MAX_SPEED)
+	# velocity = velocity.clamped(MAX_SPEED)
 	var col = move_and_collide(velocity * delta)
 	if col:
 		var reflect = col.remainder.bounce(col.normal)
 		velocity = velocity.bounce(col.normal)*0.4
 		move_and_collide(reflect)
-
-
-func _on_Body_area_entered(area):
-	print("ENTERED")
-	THRUST = 0
-	rotation *= -1
-	velocity *= -1 * 1
-
-
-func _on_Body_area_exited(area):
-	print("EXITED")
-	THRUST = 600
-
-
-func _on_Thrust_zone_exited(area):
-	MAX_SPEED = 400
-	THRUST = 600
-
-
-func _on_Thrust_zone_entered(body):
-	MAX_SPEED = 1000
-	THRUST = 1200

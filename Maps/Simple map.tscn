@@ -1,0 +1,109 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Map creator/bezier.gd" type="Script" id=1]
+[ext_resource path="res://Map creator/map.gd" type="Script" id=2]
+
+[node name="Simple map" type="StaticBody2D"]
+script = ExtResource( 2 )
+
+[node name="bezier_1" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_2" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_3" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_4" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_5" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_6" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_7" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_8" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_9" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_10" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_11" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="point_0" type="Node2D" parent="bezier_11"]
+position = Vector2( 1100, 400 )
+
+[node name="point_1" type="Node2D" parent="bezier_11"]
+position = Vector2( 1250, 450 )
+
+[node name="point_2" type="Node2D" parent="bezier_11"]
+position = Vector2( 1350, 250 )
+
+[node name="bezier_12" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="point_0" type="Node2D" parent="bezier_12"]
+position = Vector2( 1350, 250 )
+
+[node name="point_1" type="Node2D" parent="bezier_12"]
+position = Vector2( 1450, 100 )
+
+[node name="point_2" type="Node2D" parent="bezier_12"]
+position = Vector2( 1350, -50 )
+
+[node name="bezier_13" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_14" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="bezier_15" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="point_0" type="Node2D" parent="bezier_15"]
+position = Vector2( 1350, -50 )
+
+[node name="point_1" type="Node2D" parent="bezier_15"]
+position = Vector2( 1250, -250 )
+
+[node name="point_2" type="Node2D" parent="bezier_15"]
+position = Vector2( 906.188, -250 )
+
+[node name="bezier_16" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="point_0" type="Node2D" parent="bezier_16"]
+position = Vector2( 550, -250 )
+
+[node name="point_1" type="Node2D" parent="bezier_16"]
+position = Vector2( 250, -200 )
+
+[node name="point_2" type="Node2D" parent="bezier_16"]
+position = Vector2( 200, 150 )
+
+[node name="bezier_17" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="point_0" type="Node2D" parent="bezier_17"]
+position = Vector2( 100, 400 )
+
+[node name="point_1" type="Node2D" parent="bezier_17"]
+position = Vector2( 100, 700 )
+
+[node name="point_2" type="Node2D" parent="bezier_17"]
+position = Vector2( 500, 700 )
+
+[node name="point_3" type="Node2D" parent="bezier_17"]
+position = Vector2( 600, 500 )
+
+[node name="startpoint" type="Node2D" parent="."]
+position = Vector2( 582.688, 300 )
