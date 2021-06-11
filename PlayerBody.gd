@@ -17,6 +17,8 @@ func _physics_process(delta):
 		rotation -= ROT_SPEED * delta
 	if Input.is_action_pressed("RIGHT"):
 		rotation += ROT_SPEED * delta
+	if Input.is_action_pressed("THRUST"):
+		MAX_SPEED = 1000
 
 	acceleration += velocity * FRICTION
 	velocity += acceleration * delta
@@ -25,7 +27,7 @@ func _physics_process(delta):
 	var col = move_and_collide(velocity * delta)
 	if col:
 		var reflect = col.remainder.bounce(col.normal)
-		velocity = velocity.bounce(col.normal)*0.1
+		velocity = velocity.bounce(col.normal)*0.4
 		move_and_collide(reflect)
 
 
@@ -43,7 +45,10 @@ func _on_Body_area_exited(area):
 
 func _on_Thrust_zone_exited(area):
 	MAX_SPEED = 400
+	THRUST = 600
 
 
 func _on_Thrust_zone_entered(body):
+	print("test")
 	MAX_SPEED = 1000
+	THRUST = 1200
