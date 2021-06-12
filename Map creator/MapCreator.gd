@@ -17,8 +17,8 @@ var SELECTION_DISTANCE = 9
 var selection = null
 var pressed = false
 
-onready var MAP_SCRIPT = load("res://Map creator/map.gd")
-onready var BEZIER_SCRIPT = load("res://Map creator/bezier.gd")
+onready var MAP_SCRIPT = load("res://Map creator/Map.gd")
+onready var BEZIER_SCRIPT = load("res://Map creator/Bezier.gd")
 
 onready var grid = get_node("Camera2D")
 onready var popup = get_node("CenterContainer/Popup")
