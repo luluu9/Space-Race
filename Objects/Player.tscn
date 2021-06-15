@@ -6,7 +6,6 @@
 [node name="Player" type="Node"]
 
 [node name="Body" type="KinematicBody2D" parent="."]
-position = Vector2( 648.031, 300.633 )
 collision_layer = 0
 script = ExtResource( 2 )
 
@@ -14,12 +13,14 @@ script = ExtResource( 2 )
 current = true
 
 [node name="ship_icon" type="Sprite" parent="Body"]
+rotation = 1.5708
 scale = Vector2( 0.5, 1 )
 texture = ExtResource( 1 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Body"]
+rotation = 1.5708
 polygon = PoolVector2Array( -0.222351, -32.2742, -11.7416, 10.6249, 10.8997, 11.4193 )
 
 [node name="RayCast2D" type="RayCast2D" parent="Body"]
 enabled = true
-cast_to = Vector2( 0, 75 )
+cast_to = Vector2( -75, 0 )

@@ -21,3 +21,4 @@ texture = ExtResource( 3 )
 [node name="Map" type="Node" parent="."]
 
 [node name="Simple map" parent="Map" instance=ExtResource( 1 )]
+position = Vector2( -352.778, -17.6389 )
