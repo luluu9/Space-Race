@@ -5,8 +5,11 @@
 
 [node name="Player" type="Node"]
 
-[node name="Body" type="KinematicBody2D" parent="."]
+[node name="Body" type="RigidBody2D" parent="."]
 collision_layer = 0
+gravity_scale = 0.0
+linear_damp = 1.0
+angular_damp = 5.0
 script = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="Body"]
