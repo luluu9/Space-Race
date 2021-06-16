@@ -9,10 +9,12 @@ var rotation_dir = 0
 onready var thrust_ray = get_node("RayCast2D")
 
 func get_input():
+	thrust = Vector2()
 	if Input.is_action_pressed("ACCELERATE"):
 		thrust = Vector2(engine_thrust, 0)
-	else:
-		thrust = Vector2()
+	if Input.is_action_pressed("REVERSE"):
+		thrust = Vector2(-0.4*engine_thrust, 0)
+		
 	rotation_dir = 0
 	if Input.is_action_pressed("RIGHT"):
 		rotation_dir += 1
