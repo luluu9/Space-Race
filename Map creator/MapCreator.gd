@@ -21,12 +21,15 @@ onready var MAP_SCRIPT = load("res://Map creator/Map.gd")
 onready var BEZIER_SCRIPT = load("res://Map creator/Bezier.gd")
 
 onready var grid = get_node("Camera2D")
-onready var popup = get_node("CenterContainer/Popup")
-onready var line_edit = get_node("CenterContainer/Popup/LineEdit")
+onready var popup = get_node("CanvasLayer/Popup")
+onready var line_edit = get_node("CanvasLayer/Popup/LineEdit")
+
+
 
 func _ready():
 	line_edit.connect("text_entered", self, "save_map")
 	create_map()
+
 
 func _input(event):
 	var ctrl = Input.is_key_pressed(KEY_CONTROL)
@@ -34,12 +37,15 @@ func _input(event):
 	var save = Input.is_action_just_pressed("MAP_SAVE")
 	var create = Input.is_action_just_pressed("MAP_CREATE")
 	var create_startpoint = Input.is_action_just_pressed("MAP_CSTARTPOINT")
-	if create:
+	print(line_edit.get_focus_owner())
+	if line_edit.get_focus_owner():
+		return
+	if create: # CREATE BEZIER
 		if current_map:
 			create_bezier()
-	if create_startpoint:
+	elif create_startpoint:
 		create_startpoint()
-	if ctrl and save:
+	elif ctrl and save:
 		name_map()
 	
 	var mouse_pos = get_global_mouse_position()
@@ -69,6 +75,7 @@ func _input(event):
 			selection = null
 			pressed = false
 
+
 func create_map():
 	if current_map:
 		current_map.queue_free()
@@ -78,6 +85,7 @@ func create_map():
 	create_startpoint()
 	
 	add_child(current_map)
+
 
 func create_bezier():
 	var name = "bezier_" + str(current_map.get_child_count())
@@ -90,6 +98,7 @@ func create_bezier():
 	
 	current_bezier = bezier
 
+
 func create_point():
 	var name = "point_" + str(current_bezier.get_child_count())
 	var point = Node2D.new()
@@ -100,6 +109,7 @@ func create_point():
 	point.set_owner(current_map) # for saving
 	
 	update()
+
 
 func create_startpoint():
 	if current_startpoint:
@@ -113,6 +123,7 @@ func create_startpoint():
 	
 	update()
 
+
 func save_map(map_name):
 	current_map.name = map_name
 	var packed_map = PackedScene.new()
@@ -121,9 +132,10 @@ func save_map(map_name):
 	popup.hide()
 	create_map()
 
+
 # for naming current map to save
 func name_map():
-	popup.popup_centered()
+	popup.popup()
 
 
 # POINTS
@@ -150,12 +162,15 @@ func draw_helpers():
 		draw_points(points)
 		draw_helper_lines(points)
 
+
 func draw_startpoint(point):
 	draw_circle(point, SELECTION_DISTANCE, Color("74f442"))
+
 
 func draw_points(points):
 	for point in points:
 		draw_circle(point, SELECTION_DISTANCE, Color(1.0, 0.5, 0.5, 0.6))
+
 
 func draw_helper_lines(points):
 	for i in range(len(points)-1):
