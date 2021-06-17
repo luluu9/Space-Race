@@ -1,12 +1,15 @@
 extends RigidBody2D
 
 export (int) var engine_thrust = 800 # defines max speed
-export (int) var spin_thrust = 5000
+export (int) var spin_thrust = 6000
 
 var thrust = Vector2()
 var rotation_dir = 0
 
 onready var thrust_ray = get_node("RayCast2D")
+onready var right_ray = get_node("RayCast2D2")
+onready var left_ray = get_node("RayCast2D3")
+
 
 func get_input():
 	thrust = Vector2()
@@ -33,8 +36,15 @@ func _physics_process(delta):
 		thrust.x += 50*engine_thrust/distance
 	set_applied_force(thrust.rotated(rotation))
 	set_applied_torque(rotation_dir * spin_thrust)
+	if left_ray.is_colliding():
+		var direction = Vector2(-50, -100)
+		add_central_force(-direction.rotated(rotation)*10)
+	if right_ray.is_colliding():
+		var direction = Vector2(-50, 100)
+		add_central_force(-direction.rotated(rotation)*10)
+		
 #	print(linear_velocity.length())
 #	print(linear_velocity.length()/max_speed)
 #	if not thrust_ray.is_colliding():
 #		add_central_force(-linear_velocity*linear_velocity.length()/max_speed)
-#		#set_linear_damp(linear_velocity.length()/max_speed)
+#		set_linear_damp(linear_velocity.length()/max_speed)

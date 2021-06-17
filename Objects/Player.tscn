@@ -33,3 +33,13 @@ polygon = PoolVector2Array( -6.34309, -21.727, -10.5905, -5.44511, 5.69131, 18.1
 [node name="RayCast2D" type="RayCast2D" parent="Body"]
 enabled = true
 cast_to = Vector2( -75, 0 )
+
+[node name="RayCast2D2" type="RayCast2D" parent="Body"]
+position = Vector2( 20, 0 )
+enabled = true
+cast_to = Vector2( -10, 30 )
+
+[node name="RayCast2D3" type="RayCast2D" parent="Body"]
+position = Vector2( 20, 0 )
+enabled = true
+cast_to = Vector2( -10, -30 )
