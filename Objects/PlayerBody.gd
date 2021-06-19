@@ -12,15 +12,18 @@ var spin_thrust = initial_spin_thrust
 onready var thrust_ray = get_node("RayCast2D")
 onready var right_ray = get_node("RayCast2D2")
 onready var left_ray = get_node("RayCast2D3")
+onready var engine_particles = get_node("EngineParticles")
 
 
 func get_input():
 	thrust = Vector2()
 	if Input.is_action_pressed("ACCELERATE"):
 		thrust = Vector2(engine_thrust, 0)
+		engine_particles.emitting = true
+	else:
+		engine_particles.emitting = false
 	if Input.is_action_pressed("REVERSE"):
 		thrust = Vector2(-0.4*engine_thrust, 0)
-		
 	rotation_dir = 0
 	if Input.is_action_pressed("RIGHT"):
 		rotation_dir += 1
