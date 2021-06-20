@@ -8,12 +8,11 @@
 [sub_resource type="PhysicsMaterial" id=1]
 bounce = 0.34
 
-[sub_resource type="Curve" id=2]
-min_value = -2.0
-_data = [ Vector2( 0, -0.932954 ), 0.0, 0.0, 0, 0, Vector2( 1, -0.496591 ), 0.0, 0.0, 0, 0 ]
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 1, 0.105469, 0.105469, 1, 0.857422, 1, 0, 1 )
 
-[sub_resource type="CurveTexture" id=3]
-curve = SubResource( 2 )
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
 
 [sub_resource type="ParticlesMaterial" id=4]
 flag_disable_z = true
@@ -23,7 +22,7 @@ gravity = Vector3( -150, 0, 0 )
 initial_velocity = 25.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-hue_variation_curve = SubResource( 3 )
+color_ramp = SubResource( 6 )
 
 [node name="Player" type="Node"]
 
