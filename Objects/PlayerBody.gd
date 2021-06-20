@@ -19,9 +19,9 @@ func get_input():
 	thrust = Vector2()
 	if Input.is_action_pressed("ACCELERATE"):
 		thrust = Vector2(engine_thrust, 0)
-		engine_particles.emitting = true
+		engine_particles.emit("accel")
 	else:
-		engine_particles.emitting = false
+		engine_particles.stop_emit("accel")
 	if Input.is_action_pressed("REVERSE"):
 		thrust = Vector2(-0.4*engine_thrust, 0)
 	rotation_dir = 0
@@ -40,6 +40,10 @@ func _physics_process(_delta):
 		var col_point = thrust_ray.get_collision_point()
 		var distance = position.distance_to(col_point)
 		thrust.x += 50*engine_thrust/distance
+		engine_particles.emit("boost")
+		# engine_particles.lifetime = 0.4*distance/75
+	else:
+		engine_particles.stop_emit("boost")
 	set_applied_force(thrust.rotated(rotation))
 	set_applied_torque(rotation_dir * spin_thrust)
 	set_spin_thrust()
