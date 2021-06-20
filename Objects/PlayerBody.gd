@@ -13,6 +13,8 @@ onready var thrust_ray = get_node("RayCast2D")
 onready var right_ray = get_node("RayCast2D2")
 onready var left_ray = get_node("RayCast2D3")
 onready var engine_particles = get_node("EngineParticles")
+onready var left_side_particles = get_node("LeftSideParticles")
+onready var right_side_particles = get_node("RightSideParticles")
 
 
 func get_input():
@@ -60,9 +62,11 @@ func set_side_thrust():
 		var left_vector = Vector2(side_vector.x, side_vector.y*-1)
 		var force = (left_vector*side_thrust).rotated(rotation)
 		var offset = Vector2(0, -10).rotated(rotation) * linear_velocity.length()/500
+		left_side_particles.emitting = true
 		add_force(offset, force)
 	if right_ray.is_colliding():
 		var right_vector = side_vector
 		var force = (right_vector*side_thrust).rotated(rotation)
 		var offset = Vector2(0, 10).rotated(rotation) * linear_velocity.length()/500
+		right_side_particles.emitting = true
 		add_force(offset, force)
