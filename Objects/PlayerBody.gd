@@ -68,13 +68,13 @@ func set_side_thrust():
 		var left_vector = Vector2(side_vector.x, side_vector.y*-1)
 		var force = (left_vector*side_thrust).rotated(rotation)
 		var offset = Vector2(0, -10).rotated(rotation) * linear_velocity.length()/500
-		left_side_particles.emitting = true
+		particles.rpc_unreliable("emit_side", "left")
 		add_force(offset, force)
 	if right_ray.is_colliding():
 		var right_vector = side_vector
 		var force = (right_vector*side_thrust).rotated(rotation)
 		var offset = Vector2(0, 10).rotated(rotation) * linear_velocity.length()/500
-		right_side_particles.emitting = true
+		particles.rpc_unreliable("emit_side", "right")
 		add_force(offset, force)
 
 

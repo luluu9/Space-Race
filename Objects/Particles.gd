@@ -15,11 +15,21 @@ func set_type_engine(type, value):
 		"accel":
 			accel = value
 
+
 remotesync func emit_engine(type):
 	engine_particles.emitting = true
 	set_type_engine(type, true)
+
 
 remotesync func stop_emit_engine(type):
 	set_type_engine(type, false)
 	if !boost and !accel:
 		engine_particles.emitting = false
+
+
+remotesync func emit_side(type):
+	match type:
+		"left":
+			left_side_particles.emitting = true
+		"right":
+			right_side_particles.emitting = true
