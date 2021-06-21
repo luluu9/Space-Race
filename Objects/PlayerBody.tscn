@@ -36,7 +36,6 @@ angular_damp = 5.0
 script = ExtResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-current = true
 process_mode = 0
 smoothing_enabled = true
 smoothing_speed = 10.0

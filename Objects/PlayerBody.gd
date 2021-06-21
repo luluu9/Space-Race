@@ -16,6 +16,8 @@ onready var engine_particles = get_node("EngineParticles")
 onready var left_side_particles = get_node("LeftSideParticles")
 onready var right_side_particles = get_node("RightSideParticles")
 
+# puppet var r_linear_velocity = Vector2(0, 0) setget update_linear_velocity
+
 
 func get_input():
 	thrust = Vector2()
@@ -38,6 +40,14 @@ func _process(_delta):
 
 
 func _physics_process(_delta):
+	set_boost()
+	set_applied_force(thrust.rotated(rotation))
+	set_applied_torque(rotation_dir * spin_thrust)
+	set_spin_thrust()
+	set_side_thrust()
+
+
+func set_boost():
 	if thrust_ray.is_colliding():
 		var col_point = thrust_ray.get_collision_point()
 		var distance = position.distance_to(col_point)
@@ -46,10 +56,6 @@ func _physics_process(_delta):
 		# engine_particles.lifetime = 0.4*distance/75
 	else:
 		engine_particles.stop_emit("boost")
-	set_applied_force(thrust.rotated(rotation))
-	set_applied_torque(rotation_dir * spin_thrust)
-	set_spin_thrust()
-	set_side_thrust()
 
 
 func set_spin_thrust():
@@ -70,3 +76,25 @@ func set_side_thrust():
 		var offset = Vector2(0, 10).rotated(rotation) * linear_velocity.length()/500
 		right_side_particles.emitting = true
 		add_force(offset, force)
+
+
+func online(peer_id):
+	self.name = str(peer_id)
+	self.set_network_master(peer_id)
+	if is_network_master():
+		get_node("NetworkTicker").autostart = true
+		self.get_node("Camera2D").current = true
+	else:
+		set_physics_process(false)
+		set_process(false)
+
+
+func _on_NetworkTicker_timeout():
+	rpc_unreliable("update_values", linear_velocity, position, rotation, applied_force)
+
+
+remote func update_values(lin_vel, pos, rot, app_for):
+	# linear_velocity = lin_vel
+	position = pos
+	rotation = rot
+	# applied_force = app_for
