@@ -101,7 +101,7 @@ process_material = ExtResource( 5 )
 texture = ExtResource( 6 )
 
 [node name="NetworkTicker" type="Timer" parent="."]
-wait_time = 0.05
+wait_time = 0.01
 
 [node name="Player" type="Node" parent="."]
 

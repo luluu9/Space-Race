@@ -84,17 +84,15 @@ func online(peer_id):
 	if is_network_master():
 		get_node("NetworkTicker").autostart = true
 		self.get_node("Camera2D").current = true
-	else:
+	else: # physics (e.g. forces) are not used on puppets
 		set_physics_process(false)
 		set_process(false)
 
 
 func _on_NetworkTicker_timeout():
-	rpc_unreliable("update_values", linear_velocity, position, rotation, applied_force)
+	rpc_unreliable("update_values", position, rotation)
 
 
 remote func update_values(lin_vel, pos, rot, app_for):
-	# linear_velocity = lin_vel
 	position = pos
 	rotation = rot
-	# applied_force = app_for
