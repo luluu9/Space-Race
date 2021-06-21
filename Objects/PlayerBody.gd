@@ -12,9 +12,9 @@ var spin_thrust = initial_spin_thrust
 onready var thrust_ray = get_node("RayCast2D")
 onready var right_ray = get_node("RayCast2D2")
 onready var left_ray = get_node("RayCast2D3")
-onready var engine_particles = get_node("EngineParticles")
-onready var left_side_particles = get_node("LeftSideParticles")
-onready var right_side_particles = get_node("RightSideParticles")
+onready var particles = get_node("Particles")
+onready var left_side_particles = get_node("Particles/LeftSideParticles")
+onready var right_side_particles = get_node("Particles/RightSideParticles")
 
 # puppet var r_linear_velocity = Vector2(0, 0) setget update_linear_velocity
 
@@ -23,9 +23,9 @@ func get_input():
 	thrust = Vector2()
 	if Input.is_action_pressed("ACCELERATE"):
 		thrust = Vector2(engine_thrust, 0)
-		engine_particles.emit("accel")
+		particles.rpc("emit_engine", "accel")
 	else:
-		engine_particles.stop_emit("accel")
+		particles.rpc("stop_emit_engine", "accel")
 	if Input.is_action_pressed("REVERSE"):
 		thrust = Vector2(-0.4*engine_thrust, 0)
 	rotation_dir = 0
@@ -52,10 +52,10 @@ func set_boost():
 		var col_point = thrust_ray.get_collision_point()
 		var distance = position.distance_to(col_point)
 		thrust.x += 50*engine_thrust/distance
-		engine_particles.emit("boost")
+		particles.rpc("emit_engine", "boost")
 		# engine_particles.lifetime = 0.4*distance/75
 	else:
-		engine_particles.stop_emit("boost")
+		particles.rpc("stop_emit_engine", "boost")
 
 
 func set_spin_thrust():
@@ -93,6 +93,6 @@ func _on_NetworkTicker_timeout():
 	rpc_unreliable("update_values", position, rotation)
 
 
-remote func update_values(lin_vel, pos, rot, app_for):
+remote func update_values(pos, rot):
 	position = pos
 	rotation = rot

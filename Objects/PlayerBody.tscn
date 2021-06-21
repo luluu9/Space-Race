@@ -3,7 +3,7 @@
 [ext_resource path="res://ship_icon.png" type="Texture" id=1]
 [ext_resource path="res://Objects/PlayerBody.gd" type="Script" id=2]
 [ext_resource path="res://Particles/engine_fire_2.png" type="Texture" id=3]
-[ext_resource path="res://Objects/EngineParticles.gd" type="Script" id=4]
+[ext_resource path="res://Objects/Particles.gd" type="Script" id=4]
 [ext_resource path="res://Objects/SideParticlesMaterial.tres" type="Material" id=5]
 [ext_resource path="res://Particles/side_thrust.png" type="Texture" id=6]
 
@@ -64,18 +64,23 @@ position = Vector2( 20, 0 )
 enabled = true
 cast_to = Vector2( -10, -30 )
 
-[node name="EngineParticles" type="Particles2D" parent="."]
-position = Vector2( -10, 0 )
+[node name="NetworkTicker" type="Timer" parent="."]
+wait_time = 0.01
+
+[node name="Particles" type="Node2D" parent="."]
+script = ExtResource( 4 )
+
+[node name="EngineParticles" type="Particles2D" parent="Particles"]
+position = Vector2( -10.7079, 0 )
 z_index = -1
 amount = 100
 lifetime = 0.4
 visibility_rect = Rect2( -21.8248, -9.8795, 21.8244, 19.8251 )
 process_material = SubResource( 4 )
 texture = ExtResource( 3 )
-script = ExtResource( 4 )
 
-[node name="LeftSideParticles" type="Particles2D" parent="."]
-position = Vector2( 5, -14 )
+[node name="LeftSideParticles" type="Particles2D" parent="Particles"]
+position = Vector2( 4.29211, -14 )
 rotation = 1.0472
 emitting = false
 amount = 30
@@ -87,8 +92,8 @@ local_coords = false
 process_material = ExtResource( 5 )
 texture = ExtResource( 6 )
 
-[node name="RightSideParticles" type="Particles2D" parent="."]
-position = Vector2( 5, 14 )
+[node name="RightSideParticles" type="Particles2D" parent="Particles"]
+position = Vector2( 4.29211, 14 )
 rotation = -1.0472
 emitting = false
 amount = 30
@@ -99,10 +104,5 @@ visibility_rect = Rect2( -18.131, -15.5878, 32.4014, 27.7028 )
 local_coords = false
 process_material = ExtResource( 5 )
 texture = ExtResource( 6 )
-
-[node name="NetworkTicker" type="Timer" parent="."]
-wait_time = 0.01
-
-[node name="Player" type="Node" parent="."]
 
 [connection signal="timeout" from="NetworkTicker" to="." method="_on_NetworkTicker_timeout"]
