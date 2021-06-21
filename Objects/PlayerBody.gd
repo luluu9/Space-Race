@@ -16,7 +16,9 @@ onready var particles = get_node("Particles")
 onready var left_side_particles = get_node("Particles/LeftSideParticles")
 onready var right_side_particles = get_node("Particles/RightSideParticles")
 
-# puppet var r_linear_velocity = Vector2(0, 0) setget update_linear_velocity
+puppet var remote_transform = Transform2D()
+puppet var remote_angular_velocity = 0.0
+puppet var remote_linear_velocity = Vector2()
 
 
 func get_input():
@@ -39,12 +41,17 @@ func _process(_delta):
 	get_input()
 
 
-func _physics_process(_delta):
-	set_boost()
-	set_applied_force(thrust.rotated(rotation))
-	set_applied_torque(rotation_dir * spin_thrust)
-	set_spin_thrust()
-	set_side_thrust()
+func _integrate_forces(state):
+	if self.is_network_master():
+		set_boost()
+		set_applied_force(thrust.rotated(rotation))
+		set_applied_torque(rotation_dir * spin_thrust)
+		set_spin_thrust()
+		set_side_thrust()
+	else:
+		state.set_transform(remote_transform)
+		state.set_linear_velocity(remote_linear_velocity)
+		state.set_angular_velocity(remote_angular_velocity)
 
 
 func set_boost():
@@ -90,9 +97,12 @@ func online(peer_id):
 
 
 func _on_NetworkTicker_timeout():
-	rpc_unreliable("update_values", position, rotation)
+	rset_unreliable("remote_transform", transform)
+	rset_unreliable("remote_linear_velocity", linear_velocity)
+	rset_unreliable("remote_angular_velocity", angular_velocity)
 
 
 remote func update_values(pos, rot):
-	position = pos
-	rotation = rot
+	# linear_velocity, angular_velocity, 
+	applied_force = pos
+	applied_torque = rot

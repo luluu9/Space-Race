@@ -72,6 +72,10 @@ REVERSE={
  ]
 }
 
+[physics]
+
+common/physics_fps=90
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
