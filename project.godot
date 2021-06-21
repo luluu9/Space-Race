@@ -24,6 +24,10 @@ config/name="Space Race"
 run/main_scene="res://Objects/Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Networking="*res://Objects/Networking.gd"
+
 [gdnative]
 
 singletons=[ "res://git_api.gdnlib" ]
