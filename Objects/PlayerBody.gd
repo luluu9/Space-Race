@@ -19,6 +19,8 @@ onready var right_side_particles = get_node("Particles/RightSideParticles")
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
 puppet var remote_linear_velocity = Vector2()
+var last_update = 0
+var updated = false
 
 
 func get_input():
@@ -49,7 +51,9 @@ func _integrate_forces(state):
 		set_spin_thrust()
 		set_side_thrust()
 	else:
-		state.set_transform(remote_transform)
+		if not updated:
+			state.set_transform(remote_transform)
+			updated = true
 		state.set_linear_velocity(remote_linear_velocity)
 		state.set_angular_velocity(remote_angular_velocity)
 
@@ -60,7 +64,6 @@ func set_boost():
 		var distance = position.distance_to(col_point)
 		thrust.x += 50*engine_thrust/distance
 		particles.rpc("emit_engine", "boost")
-		# engine_particles.lifetime = 0.4*distance/75
 	else:
 		particles.rpc("stop_emit_engine", "boost")
 
@@ -90,19 +93,30 @@ func online(peer_id):
 	self.set_network_master(peer_id)
 	if is_network_master():
 		get_node("NetworkTicker").autostart = true
-		self.get_node("Camera2D").current = true
+		get_node("Camera2D").current = true
 	else: # physics (e.g. forces) are not used on puppets
 		set_physics_process(false)
 		set_process(false)
 
 
 func _on_NetworkTicker_timeout():
-	rset_unreliable("remote_transform", transform)
-	rset_unreliable("remote_linear_velocity", linear_velocity)
-	rset_unreliable("remote_angular_velocity", angular_velocity)
+	var data = {
+		"time": OS.get_system_time_msecs(),
+		"remote_transform": transform,
+		"remote_linear_velocity": linear_velocity,
+		"remote_angular_velocity": angular_velocity
+		}
+	rpc_unreliable("remote_update", data)
 
 
-remote func update_values(pos, rot):
-	# linear_velocity, angular_velocity, 
-	applied_force = pos
-	applied_torque = rot
+remote func remote_update(data):
+	if last_update < data["time"]:
+		remote_transform = data["remote_transform"]
+		remote_linear_velocity = data["remote_linear_velocity"]
+		remote_angular_velocity = data["remote_angular_velocity"]
+		last_update = data["time"]
+		updated = false
+
+
+# IDEAS FOR LAG COMPENSATION:
+# - measure packet loss/ping to extrapolate how long remote linear velocity should last 
