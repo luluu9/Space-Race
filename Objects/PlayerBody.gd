@@ -44,8 +44,8 @@ func _process(_delta):
 
 
 func _integrate_forces(state):
+	set_boost()
 	if self.is_network_master():
-		set_boost()
 		set_applied_force(thrust.rotated(rotation))
 		set_applied_torque(rotation_dir * spin_thrust)
 		set_spin_thrust()
