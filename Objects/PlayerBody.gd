@@ -15,6 +15,7 @@ onready var left_ray = get_node("RayCast2D3")
 onready var particles = get_node("Particles")
 onready var left_side_particles = get_node("Particles/LeftSideParticles")
 onready var right_side_particles = get_node("Particles/RightSideParticles")
+onready var camera = get_node("Camera2D")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
@@ -39,6 +40,14 @@ func get_input():
 		rotation_dir -= 1
 
 
+func set_fov():
+	var multiplier = get_speed()/engine_thrust - 0.5
+	var fov = Vector2(1, 1)
+	if multiplier > 0:
+		fov += Vector2(multiplier, multiplier)
+	camera.zoom = lerp(camera.zoom, fov, 0.1)
+
+
 func _process(_delta):
 	get_input()
 
@@ -56,6 +65,7 @@ func _integrate_forces(state):
 			updated = true
 		state.set_linear_velocity(remote_linear_velocity)
 		state.set_angular_velocity(remote_angular_velocity)
+	set_fov()
 
 
 func set_boost():
@@ -70,20 +80,20 @@ func set_boost():
 
 func set_spin_thrust():
 	if linear_velocity.length() > engine_thrust/2:
-		spin_thrust = initial_spin_thrust * linear_velocity.length()*2/engine_thrust
+		spin_thrust = initial_spin_thrust * get_speed()*2/engine_thrust
 
 
 func set_side_thrust():
 	if left_ray.is_colliding():
 		var left_vector = Vector2(side_vector.x, side_vector.y*-1)
 		var force = (left_vector*side_thrust).rotated(rotation)
-		var offset = Vector2(0, -10).rotated(rotation) * linear_velocity.length()/500
+		var offset = Vector2(0, -10).rotated(rotation) * get_speed()/500
 		particles.rpc_unreliable("emit_side", "left")
 		add_force(offset, force)
 	if right_ray.is_colliding():
 		var right_vector = side_vector
 		var force = (right_vector*side_thrust).rotated(rotation)
-		var offset = Vector2(0, 10).rotated(rotation) * linear_velocity.length()/500
+		var offset = Vector2(0, 10).rotated(rotation) * get_speed()/500
 		particles.rpc_unreliable("emit_side", "right")
 		add_force(offset, force)
 
@@ -117,6 +127,9 @@ remote func remote_update(data):
 		last_update = data["time"]
 		updated = false
 
+
+func get_speed():
+	return linear_velocity.length()
 
 # IDEAS FOR LAG COMPENSATION:
 # - measure packet loss/ping to extrapolate how long remote linear velocity should last 
