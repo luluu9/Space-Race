@@ -1,19 +1,19 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Maps/Map 1.tscn" type="PackedScene" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://Objects/Maps/Map 1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
 
 [node name="Game" type="Node"]
 
 [node name="icon2" type="Sprite" parent="."]
 position = Vector2( 854.891, 105.234 )
 scale = Vector2( 2.14027, 2.12471 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="icon3" type="Sprite" parent="."]
 position = Vector2( 932.838, 507.57 )
 scale = Vector2( 3.1824, 2.39449 )
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="Map" type="Node" parent="."]
 

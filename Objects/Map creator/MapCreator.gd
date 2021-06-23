@@ -17,8 +17,8 @@ var SELECTION_DISTANCE = 9
 var selection = null
 var pressed = false
 
-onready var MAP_SCRIPT = load("res://Map creator/Map.gd")
-onready var BEZIER_SCRIPT = load("res://Map creator/Bezier.gd")
+onready var MAP_SCRIPT = load("res://Objects/Map creator/Map.gd")
+onready var BEZIER_SCRIPT = load("res://Objects/Map creator/Bezier.gd")
 
 onready var grid = get_node("Camera2D")
 onready var popup = get_node("CanvasLayer/Popup")
@@ -128,7 +128,7 @@ func save_map(map_name):
 	current_map.name = map_name
 	var packed_map = PackedScene.new()
 	packed_map.pack(current_map)
-	ResourceSaver.save("res://Maps/" + map_name + ".tscn", packed_map)
+	ResourceSaver.save("res://Objects/Maps/" + map_name + ".tscn", packed_map)
 	popup.hide()
 	create_map()
 

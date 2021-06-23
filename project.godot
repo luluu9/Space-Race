@@ -21,12 +21,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Space Race"
-run/main_scene="res://Objects/Game.tscn"
+run/main_scene="res://Objects/Main/Game.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-Networking="*res://Objects/Networking.gd"
+Networking="*res://Objects/Main/Networking.gd"
 
 [gdnative]
 

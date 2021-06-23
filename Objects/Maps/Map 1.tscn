@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Map creator/Map.gd" type="Script" id=1]
-[ext_resource path="res://Map creator/Bezier.gd" type="Script" id=2]
+[ext_resource path="res://Objects/Map creator/Map.gd" type="Script" id=1]
+[ext_resource path="res://Objects/Map creator/Bezier.gd" type="Script" id=2]
 
 [node name="Map 1" type="StaticBody2D"]
 script = ExtResource( 1 )
