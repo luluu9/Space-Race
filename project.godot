@@ -72,6 +72,11 @@ REVERSE={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="walls"
+2d_physics/layer_2="players"
+
 [physics]
 
 common/physics_fps=90
