@@ -1,7 +1,7 @@
 extends Node
 
 var SERVER_PORT = 6996
-var MAX_PLAYERS = 2
+var MAX_PLAYERS = 4
 var HOST_IP = "127.0.0.1"
 
 onready var player_scene = preload("res://Objects/Player/PlayerBody.tscn")

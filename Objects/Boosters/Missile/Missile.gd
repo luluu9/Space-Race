@@ -53,7 +53,16 @@ func _physics_process(delta):
 
 func _process(_delta):
 	if is_network_master():
-		target = get_closest_player()
+		var new_target = get_closest_player()
+		if target != new_target: # seriously new target
+			print(new_target.name)
+			var target_peer_id = int(new_target.name)
+			get_node("/root/Game").get_game_screen().rpc_id(target_peer_id, "set_missile_target_effect", true)
+			if target: # target could be null (on first time call)
+				var old_target_peer_id = int(target.name)
+				get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
+		target = new_target
+			
 
 
 func _on_Missile_body_entered(body):
@@ -66,6 +75,9 @@ func _on_Missile_body_entered(body):
 
 
 func explode():
+	if is_network_master():
+		var old_target_peer_id = int(target.name)
+		get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
 	$Particles2D.emitting = false
 	set_physics_process(false)
 	velocity = Vector2.ZERO
