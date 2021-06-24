@@ -7,6 +7,6 @@
 [node name="MissileBubble" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="missile" type="Sprite" parent="." index="1"]
+[node name="Missile" type="Sprite" parent="." index="1"]
 scale = Vector2( 0.075, 0.075 )
 texture = ExtResource( 2 )

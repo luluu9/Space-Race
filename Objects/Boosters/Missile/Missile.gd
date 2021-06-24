@@ -55,7 +55,6 @@ func _process(_delta):
 	if is_network_master():
 		var new_target = get_closest_player()
 		if target != new_target: # seriously new target
-			print(new_target.name)
 			var target_peer_id = int(new_target.name)
 			get_node("/root/Game").get_game_screen().rpc_id(target_peer_id, "set_missile_target_effect", true)
 			if target: # target could be null (on first time call)

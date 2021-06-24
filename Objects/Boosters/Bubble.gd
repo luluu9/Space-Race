@@ -2,4 +2,10 @@ extends Area2D
 
 func _on_Bubble_body_entered(_body):
 	self.hide()
-	self.queue_free()
+	$CollisionShape2D.set_disabled(true)
+	$Timer.start()
+
+
+func _on_Timer_timeout():
+	self.show()
+	$CollisionShape2D.set_disabled(false)
