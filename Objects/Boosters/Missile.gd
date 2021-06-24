@@ -1,4 +1,4 @@
-extends Area2D
+extends "RemoteArea2D.gd"
 
 export var speed = 350
 export var steer_force = 50.0
@@ -35,19 +35,24 @@ func get_closest_player():
 			closest = players[i]
 			closest_distance = distance
 	return closest
-		 
-	
+
 
 func _physics_process(delta):
-	acceleration += seek()
-	velocity += acceleration * delta
-	velocity = velocity.clamped(speed)
-	rotation = velocity.angle()
-	position += velocity * delta
+	if is_network_master():
+		acceleration += seek()
+		velocity += acceleration * delta
+		velocity = velocity.clamped(speed)
+		rotation = velocity.angle()
+		position += velocity * delta
+		rset_unreliable("remote_transform", transform)
+		rset_unreliable("remote_velocity", velocity)
+	else:
+		extrapolate_velocity(delta)
 
 
 func _process(_delta):
-	target = get_closest_player()
+	if is_network_master():
+		target = get_closest_player()
 
 
 func _on_Missile_body_entered(body):
@@ -58,4 +63,5 @@ func _on_Missile_body_entered(body):
 
 
 func explode():
-	queue_free()
+	#queue_free()
+	pass

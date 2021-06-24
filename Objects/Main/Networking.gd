@@ -7,6 +7,7 @@ var HOST_IP = "127.0.0.1"
 onready var player_scene = preload("res://Objects/Player/PlayerBody.tscn")
 onready var world = get_node("/root/Game")
 
+
 func _ready():
 	var my_id = create_connection()
 	create_player(my_id)
