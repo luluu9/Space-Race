@@ -25,13 +25,13 @@ func seek():
 
 func get_closest_player():
 	var players = get_tree().get_nodes_in_group("Players")
-	var closest = players[0]
-	var closest_distance = (players[0].position - self.position).length()
+	var closest = null
+	var closest_distance = null
 	for i in range(1, len(players)):
 		if len(players) > 1 and players[i] == ally:
 			continue
 		var distance = (players[i].position - self.position).length()
-		if distance < closest_distance:
+		if closest == null or distance < closest_distance:
 			closest = players[i]
 			closest_distance = distance
 	return closest
