@@ -1,7 +1,8 @@
 extends "../RemoteArea2D.gd"
 
-export var speed = 350
-export var steer_force = 50.0
+export var speed = 450
+export var steer_force = 70.0
+export var hit_force = 1000
 
 var velocity = Vector2.ZERO
 var acceleration = Vector2.ZERO
@@ -59,6 +60,8 @@ func _on_Missile_body_entered(body):
 	var players = get_tree().get_nodes_in_group("Players")
 	if len(players) > 1 and body == ally:
 		return
+	var offset = body.position - self.position
+	body.apply_impulse(offset, Vector2(hit_force, 0).rotated(rotation))
 	explode()
 
 
