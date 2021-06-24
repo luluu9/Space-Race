@@ -13,6 +13,7 @@ func _ready():
 
 
 func create_connection():
+	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	var network = NetworkedMultiplayerENet.new()
 	var err = network.create_server(SERVER_PORT, MAX_PLAYERS-1) # -1 to count server as player

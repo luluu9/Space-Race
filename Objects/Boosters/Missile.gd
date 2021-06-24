@@ -9,10 +9,10 @@ var ally = null
 var target = null
 
 
-func start(_transform, _target):
+func start(_transform, _ally):
 	global_transform = _transform
 	velocity = transform.x * speed
-	target = _target
+	ally = _ally
 
 
 func seek():
@@ -23,6 +23,21 @@ func seek():
 	return steer
 
 
+func get_closest_player():
+	var players = get_tree().get_nodes_in_group("Players")
+	var closest = players[0]
+	var closest_distance = (players[0].position - self.position).length()
+	for i in range(1, len(players)):
+		if len(players) > 1 and players[i] == ally:
+			continue
+		var distance = (players[i].position - self.position).length()
+		if distance < closest_distance:
+			closest = players[i]
+			closest_distance = distance
+	return closest
+		 
+	
+
 func _physics_process(delta):
 	acceleration += seek()
 	velocity += acceleration * delta
@@ -31,8 +46,14 @@ func _physics_process(delta):
 	position += velocity * delta
 
 
+func _process(_delta):
+	target = get_closest_player()
+
+
 func _on_Missile_body_entered(body):
-	print("kaboom")
+	var players = get_tree().get_nodes_in_group("Players")
+	if len(players) > 1 and body == ally:
+		return
 	explode()
 
 

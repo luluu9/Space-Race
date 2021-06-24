@@ -1,10 +1,10 @@
 extends "Bubble.gd"
 
-onready var missile_scene = preload("res://Objects/Boosters/Missile.tscn")
+onready var missile_scene = load("res://Objects/Boosters/Missile.tscn")
 
 func _on_Bubble_body_entered(body):
 	var missile = missile_scene.instance()
-	# yield(get_tree().create_timer(1), "timeout")
+	# call_deferred due to some ugly error
 	missile.start(transform, body)
-	get_parent().add_child(missile)
+	get_parent().call_deferred("add_child", missile)
 	._on_Bubble_body_entered(body)
