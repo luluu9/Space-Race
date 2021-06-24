@@ -13,6 +13,7 @@ func start(_transform, _ally):
 	global_transform = _transform
 	velocity = transform.x * speed
 	ally = _ally
+	position = Vector2(-100, 0)
 
 
 func seek():
@@ -27,7 +28,7 @@ func get_closest_player():
 	var players = get_tree().get_nodes_in_group("Players")
 	var closest = null
 	var closest_distance = null
-	for i in range(1, len(players)):
+	for i in range(0, len(players)):
 		if len(players) > 1 and players[i] == ally:
 			continue
 		var distance = (players[i].position - self.position).length()
@@ -63,5 +64,9 @@ func _on_Missile_body_entered(body):
 
 
 func explode():
-	#queue_free()
-	pass
+	$Particles2D.emitting = false
+	set_physics_process(false)
+	velocity = Vector2.ZERO
+	$AnimationPlayer.play("explode")
+	yield($AnimationPlayer, "animation_finished")
+	queue_free()
