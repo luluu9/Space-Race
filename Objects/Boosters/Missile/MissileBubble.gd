@@ -1,6 +1,6 @@
-extends "Bubble.gd"
+extends "../Bubble.gd"
 
-onready var missile_scene = load("res://Objects/Boosters/Missile.tscn")
+onready var missile_scene = load("res://Objects/Boosters/Missile/Missile.tscn")
 
 func _on_Bubble_body_entered(body):
 	self.visible = false

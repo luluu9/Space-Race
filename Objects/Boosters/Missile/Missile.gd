@@ -1,4 +1,4 @@
-extends "RemoteArea2D.gd"
+extends "../RemoteArea2D.gd"
 
 export var speed = 350
 export var steer_force = 50.0
@@ -13,7 +13,6 @@ func start(_transform, _ally):
 	global_transform = _transform
 	velocity = transform.x * speed
 	ally = _ally
-	position = Vector2(-100, 0)
 
 
 func seek():

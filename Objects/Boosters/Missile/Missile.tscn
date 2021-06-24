@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Objects/Boosters/Missile.gd" type="Script" id=1]
-[ext_resource path="res://Objects/Boosters/missile.png" type="Texture" id=2]
-[ext_resource path="res://Objects/Boosters/MissileParticle.tres" type="Material" id=3]
-[ext_resource path="res://Objects/Boosters/MissileSmoke.png" type="Texture" id=4]
+[ext_resource path="res://Objects/Boosters/Missile/MissileParticle.tres" type="Material" id=1]
+[ext_resource path="res://Objects/Boosters/Missile/Missile.gd" type="Script" id=2]
+[ext_resource path="res://Objects/Boosters/Missile/Missile.png" type="Texture" id=3]
+[ext_resource path="res://Objects/Boosters/Missile/MissileSmoke.png" type="Texture" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 5.63575
@@ -51,12 +51,12 @@ tracks/2/keys = {
 [node name="Missile" type="Area2D"]
 collision_layer = 0
 collision_mask = 2
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 rotation = 1.5708
 scale = Vector2( 0.075, 0.075 )
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -3.17025, 0.166855 )
@@ -70,9 +70,10 @@ lifetime = 0.2
 randomness = 1.0
 visibility_rect = Rect2( -10.2047, -2.33742, 10.2035, 4.83252 )
 local_coords = false
-process_material = ExtResource( 3 )
+process_material = ExtResource( 1 )
 
 [node name="Explosion" type="Sprite" parent="."]
+visible = false
 scale = Vector2( 2.5, 2.5 )
 texture = ExtResource( 4 )
 hframes = 24
