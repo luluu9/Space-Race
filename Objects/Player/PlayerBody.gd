@@ -16,6 +16,7 @@ onready var particles = get_node("Particles")
 onready var left_side_particles = get_node("Particles/LeftSideParticles")
 onready var right_side_particles = get_node("Particles/RightSideParticles")
 onready var camera = get_node("Camera2D")
+onready var missile_scene = load("res://Objects/Boosters/Missile/Missile.tscn")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
@@ -38,6 +39,20 @@ func get_input():
 		rotation_dir += 1
 	if Input.is_action_pressed("LEFT"):
 		rotation_dir -= 1
+
+
+func _input(_event):
+	if Input.is_action_just_pressed("SHOOT"):
+		rpc("shoot", name)
+
+
+remotesync func shoot(name):
+	var missile = missile_scene.instance()
+	var body = get_parent().get_node(name)
+	missile.set_network_master(1)
+	missile.start(body.transform, body)
+	missile.position = Vector2(-200, 0)
+	get_parent().call_deferred("add_child", missile)
 
 
 func set_fov():
