@@ -49,9 +49,7 @@ func _input(_event):
 remotesync func shoot(name):
 	var missile = missile_scene.instance()
 	var body = get_parent().get_node(name)
-	missile.set_network_master(1)
 	missile.start(body.transform, body)
-	missile.position = Vector2(-200, 0)
 	get_parent().call_deferred("add_child", missile)
 
 

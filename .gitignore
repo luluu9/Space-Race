@@ -9,3 +9,4 @@ lib/
 # Others
 export_presets.cfg
 *.import
+Objects/Test/

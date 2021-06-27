@@ -12,10 +12,19 @@ var target = null
 onready var world = get_node("/root/Game")
 
 
+func _ready():
+	set_network_master(1)
+
+
 func start(_transform, _ally):
 	global_transform = _transform
 	velocity = transform.x * speed
 	ally = _ally
+	name = ally.name + "_missile"
+
+
+func _enter_tree():
+	$Particles2D.emitting = true
 
 
 func seek():
@@ -71,8 +80,9 @@ func _on_Missile_body_entered(body):
 		var players = get_tree().get_nodes_in_group("Players")
 		if len(players) > 1 and body == ally:
 			return
-		var old_target_peer_id = int(target.name)
-		get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
+		if target:
+			var old_target_peer_id = int(target.name)
+			get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
 		rpc("explode", int(body.name), position)
 
 

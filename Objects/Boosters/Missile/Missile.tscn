@@ -65,6 +65,7 @@ shape = SubResource( 1 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
 position = Vector2( -21, 0 )
+emitting = false
 amount = 20
 lifetime = 0.2
 randomness = 1.0
