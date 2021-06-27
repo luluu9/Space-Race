@@ -9,6 +9,8 @@ var acceleration = Vector2.ZERO
 var ally = null
 var target = null
 
+onready var world = get_node("/root/Game")
+
 
 func start(_transform, _ally):
 	global_transform = _transform
@@ -65,25 +67,27 @@ func _process(_delta):
 
 
 func _on_Missile_body_entered(body):
-	var players = get_tree().get_nodes_in_group("Players")
-	if len(players) > 1 and body == ally:
-		return
-	var offset = body.position - self.position
-	body.apply_impulse(offset, Vector2(hit_force, 0).rotated(rotation))
-	explode()
-
-
-func explode():
 	if is_network_master():
+		var players = get_tree().get_nodes_in_group("Players")
+		if len(players) > 1 and body == ally:
+			return
 		var old_target_peer_id = int(target.name)
 		get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
-	$Particles2D.emitting = false
-	set_physics_process(false)
-	velocity = Vector2.ZERO
-	$AnimationPlayer.play("explode")
-	yield($AnimationPlayer, "animation_finished")
-	queue_free()
+		rpc("explode", int(body.name), position)
 
 
-# TODO:
-# - synchronizing explosion
+remotesync func explode(body_peer_id, _position=null):
+	if is_instance_valid(self): # check if not freed already
+		if _position: # synchronize position
+			position = _position
+		$Particles2D.emitting = false
+		set_physics_process(false)
+		velocity = Vector2.ZERO
+		$AnimationPlayer.play("explode")
+		# apply an impulse only on the affected player (position is synchronized)
+		if get_tree().get_network_unique_id() == body_peer_id:
+			var body = world.get_node(str(body_peer_id))
+			var offset = body.position - self.position
+			body.apply_impulse(offset, Vector2(hit_force, 0).rotated(rotation))
+		yield($AnimationPlayer, "animation_finished")
+		queue_free()

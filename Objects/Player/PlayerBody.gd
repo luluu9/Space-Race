@@ -122,6 +122,7 @@ func online(peer_id):
 	else: # physics (e.g. forces) are not used on puppets
 		set_physics_process(false)
 		set_process(false)
+		set_process_input(false)
 
 
 func _on_NetworkTicker_timeout():
