@@ -5,12 +5,13 @@ var MAX_PLAYERS = 4
 var HOST_IP = "127.0.0.1"
 
 onready var player_scene = preload("res://Objects/Player/PlayerBody.tscn")
-onready var world = get_node("/root/Game")
+onready var world = get_node_or_null("/root/Game")
 
 
 func _ready():
-	var my_id = create_connection()
-	create_player(my_id)
+	if world: # if null it means that specific scene is running
+		var my_id = create_connection()
+		create_player(my_id)
 
 
 func create_connection():
