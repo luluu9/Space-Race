@@ -1,7 +1,7 @@
 extends RigidBody2D
 
 export (int) var engine_thrust = 800 # defines max speed
-export (int) var initial_spin_thrust = 6000
+export (int) var initial_spin_thrust = 10000
 export (int) var side_thrust = 500
 
 var thrust = Vector2()
@@ -70,7 +70,7 @@ func _integrate_forces(state):
 	if self.is_network_master():
 		set_applied_force(thrust.rotated(rotation))
 		set_applied_torque(rotation_dir * spin_thrust)
-		set_spin_thrust()
+		# set_spin_thrust()
 		set_side_thrust()
 	else:
 		if not updated:
