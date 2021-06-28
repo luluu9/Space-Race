@@ -16,7 +16,9 @@ func _ready():
 
 func create_connection():
 	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_connected", self, "_player_connected")
+	get_tree().connect("network_peer_connected", self, "player_connected")
+	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
+	get_tree().connect("server_disconnected", self, "host_disconnected")
 	var network = NetworkedMultiplayerENet.new()
 	var err = network.create_server(SERVER_PORT, MAX_PLAYERS-1) # -1 to count server as player
 	if err:
@@ -31,6 +33,14 @@ func create_player(peer_id):
 	player_node.online(peer_id)
 
 
-func _player_connected(peer_id):
+func player_connected(peer_id):
 	print("CONNECTED " + str(peer_id))
 	create_player(peer_id)
+
+
+func player_disconnected(peer_id):
+	world.get_node(str(peer_id)).queue_free()
+
+
+func host_disconnected():
+	get_tree().quit()
