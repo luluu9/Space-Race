@@ -74,7 +74,8 @@ func _integrate_forces(state):
 		set_side_thrust()
 	else:
 		if not updated:
-			state.set_transform(remote_transform)
+			var interpolated_transform = state.transform.interpolate_with(remote_transform, 0.5)
+			state.set_transform(interpolated_transform)
 			updated = true
 		state.set_linear_velocity(remote_linear_velocity)
 		state.set_angular_velocity(remote_angular_velocity)

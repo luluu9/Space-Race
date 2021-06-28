@@ -69,6 +69,7 @@ enabled = true
 cast_to = Vector2( -10, -30 )
 
 [node name="NetworkTicker" type="Timer" parent="."]
+process_mode = 0
 wait_time = 0.01
 
 [node name="Particles" type="Node2D" parent="."]
