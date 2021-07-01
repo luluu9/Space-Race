@@ -1,5 +1,7 @@
 extends RigidBody2D
 
+enum Item {NONE, HOMING_MISSILE}
+
 export (int) var engine_thrust = 800 # defines max speed
 export (int) var initial_spin_thrust = 10000
 export (int) var side_thrust = 500
@@ -18,6 +20,7 @@ onready var right_side_particles = get_node("Particles/RightSideParticles")
 onready var camera = get_node("Camera2D")
 onready var missile_scene = load("res://Objects/Boosters/Missile/Missile.tscn")
 onready var missile_effect_rect = get_node("MissileEffect/ColorRect")
+onready var item_texture_container = get_node("PlayerUI/ItemPanel/ItemContainer")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
@@ -26,6 +29,8 @@ var last_update = 0
 var updated = false
 
 var missiles_target = []
+
+var current_item = Item.NONE
 
 
 func get_input():
@@ -45,8 +50,12 @@ func get_input():
 
 
 func _input(_event):
-	if Input.is_action_just_pressed("SHOOT"):
-		rpc("shoot", name)
+	if Input.is_action_just_pressed("USE_ITEM"):
+		match current_item:
+			Item.HOMING_MISSILE:
+				rpc("shoot", name)
+		current_item = Item.NONE
+		item_texture_container.visible = false
 
 
 remotesync func shoot(name):
@@ -161,6 +170,11 @@ remotesync func set_missile_target_effect(missile_name, value):
 			missiles_target.erase(missile_name)
 		if len(missiles_target) == 0:
 			missile_effect_rect.visible = false
+
+
+func set_item(item):
+	current_item = item
+	item_texture_container.visible = true
 
 
 # IDEAS FOR LAG COMPENSATION:
