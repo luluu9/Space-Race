@@ -6,18 +6,18 @@
 [ext_resource path="res://Objects/Player/Particles/Particles.gd" type="Script" id=4]
 [ext_resource path="res://Objects/Player/Particles/side_thrust.png" type="Texture" id=5]
 [ext_resource path="res://Objects/Player/Particles/SideParticlesMaterial.tres" type="Material" id=6]
-[ext_resource path="res://Objects/Boosters/Missile/Missile.png" type="Texture" id=7]
+[ext_resource path="res://Objects/Items/HomingMissile/Missile.png" type="Texture" id=7]
 
-[sub_resource type="PhysicsMaterial" id=2]
+[sub_resource type="PhysicsMaterial" id=1]
 bounce = 0.34
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 1, 0.105469, 0.105469, 1, 0.857422, 1, 0, 1 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=4]
 flag_disable_z = true
 direction = Vector3( -10, 0, 0 )
 spread = 90.0
@@ -25,9 +25,9 @@ gravity = Vector3( -150, 0, 0 )
 initial_velocity = 25.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
-color_ramp = SubResource( 4 )
+color_ramp = SubResource( 3 )
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=5]
 code = "shader_type canvas_item;
 
 void fragment() {
@@ -40,7 +40,7 @@ void fragment() {
 }"
 
 [sub_resource type="ShaderMaterial" id=6]
-shader = SubResource( 1 )
+shader = SubResource( 5 )
 
 [node name="PlayerBody" type="RigidBody2D" groups=[
 "Players",
@@ -48,7 +48,7 @@ shader = SubResource( 1 )
 position = Vector2( -0.707886, 0 )
 collision_layer = 2
 collision_mask = 3
-physics_material_override = SubResource( 2 )
+physics_material_override = SubResource( 1 )
 gravity_scale = 0.0
 can_sleep = false
 linear_damp = 1.0
@@ -97,7 +97,7 @@ z_index = -1
 amount = 100
 lifetime = 0.4
 visibility_rect = Rect2( -21.8248, -9.8795, 21.8244, 19.8251 )
-process_material = SubResource( 5 )
+process_material = SubResource( 4 )
 texture = ExtResource( 1 )
 
 [node name="LeftSideParticles" type="Particles2D" parent="Particles"]

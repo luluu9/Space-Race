@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-enum Item {NONE, HOMING_MISSILE}
+enum Item {NONE=-1, HOMING_MISSILE}
 
 export (int) var engine_thrust = 800 # defines max speed
 export (int) var initial_spin_thrust = 10000
@@ -18,7 +18,7 @@ onready var particles = get_node("Particles")
 onready var left_side_particles = get_node("Particles/LeftSideParticles")
 onready var right_side_particles = get_node("Particles/RightSideParticles")
 onready var camera = get_node("Camera2D")
-onready var missile_scene = load("res://Objects/Boosters/Missile/Missile.tscn")
+onready var homing_missile_scene = load("res://Objects/Items/HomingMissile/HomingMissile.tscn")
 onready var missile_effect_rect = get_node("MissileEffect/ColorRect")
 onready var item_texture_container = get_node("PlayerUI/ItemPanel/ItemContainer")
 
@@ -59,7 +59,7 @@ func _input(_event):
 
 
 remotesync func shoot(name):
-	var missile = missile_scene.instance()
+	var missile = homing_missile_scene.instance()
 	var body = get_parent().get_node(name)
 	missile.start(body.transform, body)
 	get_parent().call_deferred("add_child", missile)
@@ -79,7 +79,7 @@ func _process(_delta):
 
 func _integrate_forces(state):
 	set_boost()
-	if self.is_network_master():
+	if is_network_master():
 		set_applied_force(thrust.rotated(rotation))
 		set_applied_torque(rotation_dir * spin_thrust)
 		# set_spin_thrust()
@@ -134,6 +134,7 @@ func online(peer_id):
 		set_physics_process(false)
 		set_process(false)
 		set_process_input(false)
+		get_node("PlayerUI").queue_free()
 
 
 func _on_NetworkTicker_timeout():
@@ -173,8 +174,9 @@ remotesync func set_missile_target_effect(missile_name, value):
 
 
 func set_item(item):
-	current_item = item
-	item_texture_container.visible = true
+	if is_network_master():
+		current_item = item
+		item_texture_container.visible = true
 
 
 # IDEAS FOR LAG COMPENSATION:
