@@ -8,6 +8,7 @@ var velocity = Vector2.ZERO
 var acceleration = Vector2.ZERO
 var ally = null
 var target = null
+var exploded = false
 
 onready var world = get_node("/root/Game")
 
@@ -67,12 +68,11 @@ func _process(_delta):
 		var new_target = get_closest_player()
 		if target != new_target: # seriously new target
 			var target_peer_id = int(new_target.name)
-			get_node("/root/Game").get_game_screen().rpc_id(target_peer_id, "set_missile_target_effect", true)
+			new_target.rpc_id(target_peer_id, "set_missile_target_effect", self.name, true)
 			if target: # target could be null (on first time call)
 				var old_target_peer_id = int(target.name)
-				get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
+				target.rpc_id(old_target_peer_id, "set_missile_target_effect", self.name, false)
 		target = new_target
-			
 
 
 func _on_Missile_body_entered(body):
@@ -80,10 +80,9 @@ func _on_Missile_body_entered(body):
 		var players = get_tree().get_nodes_in_group("Players")
 		if len(players) > 1 and body == ally:
 			return
-		if target:
-			var old_target_peer_id = int(target.name)
-			get_node("/root/Game").get_game_screen().rpc_id(old_target_peer_id, "set_missile_target_effect", false)
-		rpc("explode", int(body.name), position)
+		if not exploded:
+			rpc("explode", int(body.name), position)
+			exploded = true
 
 
 remotesync func explode(body_peer_id, _position=null):
@@ -92,7 +91,11 @@ remotesync func explode(body_peer_id, _position=null):
 			position = _position
 		$Particles2D.emitting = false
 		set_physics_process(false)
+		set_process(false)
 		velocity = Vector2.ZERO
+		if target:
+			var target_peer_id = int(target.name)
+			target.rpc_id(target_peer_id, "set_missile_target_effect", self.name, false)
 		$AnimationPlayer.play("explode")
 		# apply an impulse only on the affected player (position is synchronized)
 		if get_tree().get_network_unique_id() == body_peer_id:

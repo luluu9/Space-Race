@@ -17,12 +17,15 @@ onready var left_side_particles = get_node("Particles/LeftSideParticles")
 onready var right_side_particles = get_node("Particles/RightSideParticles")
 onready var camera = get_node("Camera2D")
 onready var missile_scene = load("res://Objects/Boosters/Missile/Missile.tscn")
+onready var missile_effect_rect = get_node("MissileEffect/ColorRect")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
 puppet var remote_linear_velocity = Vector2()
 var last_update = 0
 var updated = false
+
+var missiles_target = []
 
 
 func get_input():
@@ -145,6 +148,20 @@ remote func remote_update(data):
 
 func get_speed():
 	return linear_velocity.length()
+
+
+remotesync func set_missile_target_effect(missile_name, value):
+	if value == true:
+		if not missile_name in missiles_target:
+			missiles_target.append(missile_name)
+		if len(missile_name) > 0:
+			missile_effect_rect.visible = true
+	else:
+		if missile_name in missiles_target:
+			missiles_target.erase(missile_name)
+		if len(missiles_target) == 0:
+			missile_effect_rect.visible = false
+
 
 # IDEAS FOR LAG COMPENSATION:
 # - measure packet loss/ping to extrapolate how long remote linear velocity should last 
