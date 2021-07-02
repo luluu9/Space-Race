@@ -60,8 +60,7 @@ func _input(_event):
 
 remotesync func shoot(name):
 	var missile = homing_missile_scene.instance()
-	var body = get_parent().get_node(name)
-	missile.start(body.transform, body)
+	missile.start(self.transform, self)
 	get_parent().call_deferred("add_child", missile)
 
 
