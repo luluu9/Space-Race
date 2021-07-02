@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-enum Item {NONE=-1, HOMING_MISSILE}
+enum Item {NONE=-1, HOMING_MISSILE, BANANA}
 
 export (int) var engine_thrust = 800 # defines max speed
 export (int) var initial_spin_thrust = 10000
@@ -21,6 +21,7 @@ onready var camera = get_node("Camera2D")
 onready var homing_missile_scene = load("res://Objects/Items/HomingMissile/HomingMissile.tscn")
 onready var missile_effect_rect = get_node("MissileEffect/ColorRect")
 onready var item_texture_container = get_node("PlayerUI/ItemPanel/ItemContainer")
+onready var banana_scene = load("res://Objects/Items/Banana/Banana.tscn")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
@@ -53,15 +54,24 @@ func _input(_event):
 	if Input.is_action_just_pressed("USE_ITEM"):
 		match current_item:
 			Item.HOMING_MISSILE:
-				rpc("shoot", name)
+				rpc("shoot")
+			Item.BANANA:
+				rpc("drop_banana")
 		current_item = Item.NONE
 		item_texture_container.visible = false
 
 
-remotesync func shoot(name):
+remotesync func shoot():
 	var missile = homing_missile_scene.instance()
-	missile.start(self.transform, self)
+	missile.start(transform, self)
 	get_parent().call_deferred("add_child", missile)
+
+
+remotesync func drop_banana():
+	var banana = banana_scene.instance()
+	banana.caller = self
+	banana.position = position
+	get_parent().add_child(banana)
 
 
 func set_fov():
