@@ -1,0 +1,73 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Fonts/Score.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Fonts/LobbyScreen.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Objects/UILayer/GameScreen.gd" type="Script" id=3]
+
+[node name="GameScreen" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_right = 1880.0
+margin_bottom = 60.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Label" parent="HBoxContainer"]
+margin_left = 942.0
+margin_right = 977.0
+margin_bottom = 79.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+
+[node name="Players" type="GridContainer" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 360.0
+margin_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 300, 500 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Nicknames" type="Label" parent="Players"]
+margin_right = 114.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Nick"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Colors" type="Label" parent="Players"]
+margin_left = 139.0
+margin_right = 210.0
+margin_bottom = 45.0
+size_flags_horizontal = 6
+custom_fonts/font = ExtResource( 2 )
+text = "Color"
+
+[node name="Points" type="Label" parent="Players"]
+margin_left = 267.0
+margin_right = 350.0
+margin_bottom = 45.0
+size_flags_horizontal = 14
+custom_fonts/font = ExtResource( 2 )
+text = "Points"
+__meta__ = {
+"_edit_use_anchors_": false
+}

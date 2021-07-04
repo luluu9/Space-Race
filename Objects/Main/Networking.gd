@@ -1,5 +1,14 @@
 extends Node
 
+signal connected
+signal hosted
+
+enum GAME_PHASE {INIT, LOBBY, STARTED}
+
+var game_phase = GAME_PHASE.INIT
+
+export (bool) var debug = false
+
 var SERVER_PORT = 6996
 var MAX_PLAYERS = 4
 var HOST_IP = "127.0.0.1"
@@ -10,15 +19,42 @@ onready var world = get_node_or_null("/root/Game")
 
 func _ready():
 	if world: # if null it means that specific scene is running
-		var my_id = create_connection()
-		create_player(my_id)
+		if debug:
+			var my_id = create_connection()
+			debug_create_player(my_id)
+		else:
+			world.get_title_screen().connect("connect", self, "connect_to_host")
+			world.get_title_screen().connect("host", self, "host_game")
+
+
+func connect_to_host(ip, port):
+	var network = NetworkedMultiplayerENet.new()
+	var err = network.create_client(ip, port)
+	if err:
+		push_error("Can't create connection to host")
+		return
+	get_tree().network_peer = network
+	emit_signal("connected")
+
+
+func host_game():
+	var network = NetworkedMultiplayerENet.new()
+	var err = network.create_server(SERVER_PORT, MAX_PLAYERS-1)
+	if err:
+		push_error("Can't host game")
+		return
+	get_tree().network_peer = network
+	game_phase = GAME_PHASE.LOBBY
+	emit_signal("hosted")
 
 
 func create_connection():
 	# warning-ignore:return_value_discarded
-	get_tree().connect("network_peer_connected", self, "player_connected")
-	get_tree().connect("network_peer_disconnected", self, "player_disconnected")
-	get_tree().connect("server_disconnected", self, "host_disconnected")
+	get_tree().connect("network_peer_connected", self, "debug_player_connected")
+	# warning-ignore:return_value_discarded
+	get_tree().connect("network_peer_disconnected", self, "debug_player_disconnected")
+	# warning-ignore:return_value_discarded
+	get_tree().connect("server_disconnected", self, "debug_host_disconnected")
 	var network = NetworkedMultiplayerENet.new()
 	var err = network.create_server(SERVER_PORT, MAX_PLAYERS-1) # -1 to count server as player
 	if err:
@@ -27,20 +63,24 @@ func create_connection():
 	return network.get_unique_id()
 
 
-func create_player(peer_id):
+### DEBUG ###
+#   #####   #
+#    ###    #
+#############
+func debug_create_player(peer_id):
 	var player_node = player_scene.instance()
 	world.add_child(player_node)
 	player_node.online(peer_id)
 
 
-func player_connected(peer_id):
+func debug_player_connected(peer_id):
 	print("CONNECTED " + str(peer_id))
-	create_player(peer_id)
+	debug_create_player(peer_id)
 
 
-func player_disconnected(peer_id):
+func debug_player_disconnected(peer_id):
 	world.get_node(str(peer_id)).queue_free()
 
 
-func host_disconnected():
+func debug_host_disconnected():
 	get_tree().quit()

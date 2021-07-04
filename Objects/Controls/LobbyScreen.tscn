@@ -1,0 +1,111 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Fonts/LobbyScreen.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/OdibeeSans-Regular.ttf" type="DynamicFontData" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 40
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[node name="LobbyScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -0.00012207
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -424.0
+margin_top = -261.0
+margin_right = 424.0
+margin_bottom = 261.0
+custom_constants/separation = 40
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+margin_right = 308.0
+margin_bottom = 599.0
+rect_min_size = Vector2( 200, 250 )
+custom_constants/separation = 10
+
+[node name="StartButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_right = 308.0
+margin_bottom = 51.0
+custom_fonts/font = ExtResource( 2 )
+disabled = true
+text = "Start the game"
+
+[node name="NicknameEdit" type="LineEdit" parent="HBoxContainer/VBoxContainer"]
+margin_top = 61.0
+margin_right = 308.0
+margin_bottom = 116.0
+custom_fonts/font = ExtResource( 2 )
+align = 1
+placeholder_text = "Nickname"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorPicker" type="ColorPicker" parent="HBoxContainer/VBoxContainer"]
+margin_top = 126.0
+margin_right = 308.0
+margin_bottom = 538.0
+edit_alpha = false
+presets_visible = false
+
+[node name="SetButton" type="Button" parent="HBoxContainer/VBoxContainer"]
+margin_top = 548.0
+margin_right = 308.0
+margin_bottom = 599.0
+custom_fonts/font = ExtResource( 2 )
+text = "Set"
+
+[node name="LobbyPlayers" type="GridContainer" parent="HBoxContainer"]
+margin_left = 348.0
+margin_right = 648.0
+margin_bottom = 599.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_min_size = Vector2( 300, 500 )
+columns = 2
+
+[node name="Nicknames" type="Label" parent="HBoxContainer/LobbyPlayers"]
+margin_right = 148.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Nicknames"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Colors" type="Label" parent="HBoxContainer/LobbyPlayers"]
+margin_left = 152.0
+margin_right = 300.0
+margin_bottom = 45.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 2 )
+text = "Colors"
+
+[node name="ConnectionLog" type="RichTextLabel" parent="HBoxContainer"]
+margin_left = 688.0
+margin_right = 1188.0
+margin_bottom = 599.0
+rect_min_size = Vector2( 500, 250 )
+custom_fonts/normal_font = SubResource( 1 )
+scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/SetButton" to="." method="_on_SetButton_pressed"]
