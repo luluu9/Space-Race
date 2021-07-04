@@ -76,7 +76,7 @@ remotesync func drop_banana():
 
 func set_fov():
 	var multiplier = get_speed()/engine_thrust - 0.5
-	var fov = Vector2(1, 1)
+	var fov = Vector2(0.5, 0.5)
 	if multiplier > 0:
 		fov += Vector2(multiplier, multiplier)
 	camera.zoom = lerp(camera.zoom, fov, 0.1)
