@@ -1,7 +1,6 @@
 extends Control
 
 signal start_game
-signal set_info (info)
 
 onready var logs = $HBoxContainer/ConnectionLog
 onready var start_button = $HBoxContainer/VBoxContainer/StartButton
@@ -11,8 +10,6 @@ onready var players_node = $HBoxContainer/LobbyPlayers
 
 onready var lobby_font = preload("res://Fonts/LobbyScreen.tres")
 
-var players_labels = []
-
 
 func _ready():
 	# warning-ignore:return_value_discarded
@@ -20,11 +17,13 @@ func _ready():
 	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 	# warning-ignore:return_value_discarded
-	get_tree().connect("connected_to_server", self, "_connected_ok")
+	get_tree().connect("connected_to_server", self, "_connected_to_server")
 	# warning-ignore:return_value_discarded
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	# warning-ignore:return_value_discarded
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	# warning-ignore:return_value_discarded
+	Networking.connect("info_updated", self, "update_info")
 
 
 func log_message(message):
@@ -42,20 +41,18 @@ func start():
 		log_message(message)
 
 
-func _player_connected(id):
-	var message = "Player connected, id " + str(id)
+func _player_connected(peer_id):
+	var message = "Player connected, id " + str(peer_id)
 	log_message(message)
 
 
-func _player_disconnected(id):
-	var message = "Player disconnected, id " + str(id)
+func _player_disconnected(peer_id):
+	var message = "Player disconnected, id " + str(peer_id)
 	log_message(message)
+	remove_player(peer_id)
 
 
-func _connected_ok():
-	if not nickname_edit.text.empty():
-		yield(get_tree().create_timer(1.0), "timeout") # give time to initialize players_info from host
-		_on_SetButton_pressed() # if nick selected earlier it will be send
+func _connected_to_server():
 	var message = "Connected"
 	log_message(message)
 
@@ -68,8 +65,10 @@ func _connected_fail():
 func _server_disconnected():
 	var message = "Server disconnected"
 	log_message(message)
-	for peer_id in players_labels.duplicate():
-		remove_player(peer_id)
+	# delete all entries
+	for node in players_node.get_children():
+		if "color" in node.name or "label" in node.name:
+			node.queue_free()
 
 
 func _on_StartButton_pressed():
@@ -77,46 +76,46 @@ func _on_StartButton_pressed():
 
 
 func _on_SetButton_pressed():
-	var nickname = nickname_edit.text
-	var info = ["name", nickname]
-	emit_signal("set_info", info)
+	var nick = nickname_edit.text
 	var color = color_picker.color
-	info = ["color", color]
-	emit_signal("set_info", info)
+	Networking.send_info({"nick": nick, "color": color})
 
 
-func update_lobby(players_info):
-	for peer_id in players_info:
-		var player_label = null
-		var player_color = null
-		for info_name in players_info[peer_id]:
-			if not peer_id in players_labels: # player is new, create scenes
-				player_label = Label.new()
-				player_label.name = peer_id
-				player_label.size_flags_horizontal = SIZE_EXPAND_FILL
-				player_label.add_font_override("font", lobby_font)
-				
-				player_color = ColorRect.new()
-				player_color.name = peer_id + "_color"
-				player_color.size_flags_horizontal = SIZE_EXPAND_FILL
-				
-				players_node.add_child(player_label) 
-				players_node.add_child(player_color)
-				
-				players_labels.append(peer_id)
-			
-			player_label = players_node.get_node(peer_id)
-			player_color = players_node.get_node(peer_id + "_color")
-			var info_value = players_info[peer_id][info_name]
-			match info_name:
+func create_player_nodes(peer_id):
+	var player_label = Label.new()
+	player_label.name = str(peer_id) + "_label"
+	player_label.size_flags_horizontal = SIZE_EXPAND_FILL
+	player_label.add_font_override("font", lobby_font)
+	
+	var player_color = ColorRect.new()
+	player_color.name = str(peer_id) + "_color"
+	player_color.size_flags_horizontal = SIZE_EXPAND_FILL
+	
+	players_node.add_child(player_label) 
+	players_node.add_child(player_color)
+	return [player_label, player_color]
+
+
+func update_info(player_info):
+	for peer_id in player_info:
+		var player_label = players_node.get_node_or_null(str(peer_id) + "_label")
+		var player_color = players_node.get_node_or_null(str(peer_id) + "_color")
+		if not player_label:
+			var player_nodes = create_player_nodes(peer_id)
+			player_label = player_nodes[0]
+			player_color = player_nodes[1]
+		for info_key in player_info[peer_id]:
+			match info_key:
 				"color":
-					player_color.color = info_value
-				"name":
-					player_label.text = info_value 
+					player_color.color = player_info[peer_id][info_key]
+				"nick":
+					player_label.text = player_info[peer_id][info_key]
 
 
 func remove_player(peer_id):
-	if peer_id in players_labels:
-		players_node.get_node(peer_id).queue_free()
-		players_node.get_node(peer_id + "_color").queue_free()
-	players_labels.erase(peer_id)
+	var player_label = players_node.get_node_or_null(str(peer_id) + "_label")
+	if player_label:
+		player_label.queue_free()
+	var player_color = players_node.get_node_or_null(str(peer_id) + "_color")
+	if player_color:
+		player_color.queue_free()
