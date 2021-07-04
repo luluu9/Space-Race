@@ -1,14 +1,14 @@
 extends Control
  
-signal connect(ip, port)
-signal host
+signal connect(mode, ip, port)
+signal host(mode)
 
 onready var ip_node = $HBoxContainer/VBoxContainer/IpEdit
 onready var port_node = $HBoxContainer/VBoxContainer/PortEdit
 
 
 func _on_HostButton_pressed():
-	emit_signal("host")
+	emit_signal("host", "SERVER")
 
 
 func _on_ConnectButton_pressed():
@@ -20,5 +20,5 @@ func _on_ConnectButton_pressed():
 	if not port:
 		push_warning("Port not given")
 		return
-	emit_signal("connect", ip, port)
+	emit_signal("connect", "CLIENT", ip, port)
 	

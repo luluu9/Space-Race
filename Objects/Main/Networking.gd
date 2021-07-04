@@ -1,7 +1,7 @@
 extends Node
 
-signal connected
-signal hosted
+signal connection_created(mode)
+
 
 enum GAME_PHASE {INIT, LOBBY, STARTED}
 
@@ -20,35 +20,28 @@ onready var world = get_node_or_null("/root/Game")
 func _ready():
 	if world: # if null it means that specific scene is running
 		if debug:
-			var my_id = create_connection()
+			var my_id = debug_create_connection()
 			debug_create_player(my_id)
 		else:
-			world.get_title_screen().connect("connect", self, "connect_to_host")
-			world.get_title_screen().connect("host", self, "host_game")
+			world.get_title_screen().connect("connect", self, "create_connection")
+			world.get_title_screen().connect("host", self, "create_connection")
 
-
-func connect_to_host(ip, port):
+# mode = SERVER/CLIENT
+func create_connection(mode, ip=null, port=null):
 	var network = NetworkedMultiplayerENet.new()
-	var err = network.create_client(ip, port)
+	var err = null
+	if mode == "SERVER":
+		err = network.create_server(SERVER_PORT, MAX_PLAYERS-1)
+	else:
+		err = network.create_client(ip, port)
 	if err:
-		push_error("Can't create connection to host")
+		push_error("Can't create connection")
 		return
 	get_tree().network_peer = network
-	emit_signal("connected")
+	emit_signal("connection_created", mode)
 
 
-func host_game():
-	var network = NetworkedMultiplayerENet.new()
-	var err = network.create_server(SERVER_PORT, MAX_PLAYERS-1)
-	if err:
-		push_error("Can't host game")
-		return
-	get_tree().network_peer = network
-	game_phase = GAME_PHASE.LOBBY
-	emit_signal("hosted")
-
-
-func create_connection():
+func debug_create_connection():
 	# warning-ignore:return_value_discarded
 	get_tree().connect("network_peer_connected", self, "debug_player_connected")
 	# warning-ignore:return_value_discarded

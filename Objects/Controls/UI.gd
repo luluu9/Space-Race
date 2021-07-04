@@ -5,9 +5,8 @@ var currentScreen = null
 
 func _ready():
 	# warning-ignore:return_value_discarded
-	Networking.connect("connected", self, "_on_Networking_connected")
-	# warning-ignore:return_value_discarded
-	Networking.connect("hosted", self, "_on_Networking_hosted")
+	Networking.connect("connection_created", self, "_on_Networking_connection_created")
+
 	show_screen("TitleScreen")
 
 
@@ -19,11 +18,7 @@ func show_screen(screenName):
 	currentScreen = screenNode
 
 
-func _on_Networking_connected():
-	show_screen("LobbyScreen")
-
-
-func _on_Networking_hosted():
+func _on_Networking_connection_created(mode):
 	show_screen("LobbyScreen")
 
 
