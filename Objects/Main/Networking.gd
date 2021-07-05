@@ -26,6 +26,7 @@ var game_phase = GAME_PHASE.INIT
 var players_loading = 0
 var players_ready = 0
 
+
 func _ready():
 	if world: # if null it means that specific scene is running
 		if debug:

@@ -58,7 +58,7 @@ func _input(_event):
 			Item.BANANA:
 				rpc("drop_banana")
 		current_item = Item.NONE
-		item_texture_container.visible = false
+		item_texture_container.texture = null
 
 
 remotesync func shoot():
@@ -187,7 +187,13 @@ remotesync func set_missile_target_effect(missile_name, value):
 func set_item(item):
 	if is_network_master():
 		current_item = item
-		item_texture_container.visible = true
+		var texture = null
+		match item:
+			Item.BANANA:
+				texture = load("res://Objects/Items/Banana/Banana.png")
+			Item.HOMING_MISSILE:
+				texture = load("res://Objects/Items/HomingMissile/Missile.png")
+		item_texture_container.texture = texture
 
 
 # IDEAS FOR LAG COMPENSATION:
