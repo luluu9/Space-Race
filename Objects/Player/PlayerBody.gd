@@ -133,12 +133,14 @@ func set_side_thrust():
 		add_force(offset, force)
 
 
+# call it after adding to the tree
 func online(peer_id):
 	self.name = str(peer_id)
 	self.set_network_master(peer_id)
 	if is_network_master():
 		get_node("NetworkTicker").autostart = true
 		get_node("Camera2D").current = true
+		get_node("NetworkTicker").start()
 	else: # physics (e.g. forces) are not used on puppets
 		set_physics_process(false)
 		set_process(false)
