@@ -76,6 +76,9 @@ func _player_connected(peer_id):
 func _player_disconnected(peer_id):
 	print("Disconnected: " + str(peer_id))
 	players_info.erase(peer_id)
+	var player_to_delete = world.get_node_or_null(str(peer_id))
+	if player_to_delete:
+		player_to_delete.queue_free()
 
 
 func _server_disconnected():
