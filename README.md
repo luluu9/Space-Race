@@ -20,7 +20,7 @@ Main goal of this project is to create an enjoyable Mario Kart style game in a 2
 
 
 ## Game preview
-![Player controls spaceship drives at high speed along a track and shoots missiles to other player](/Images/Game_preview_video.webp)
+![Player controls spaceship drives at high speed along a track and shoots missiles to other player](/Images/Game_preview_video.gif)
 
 
 ## Info
