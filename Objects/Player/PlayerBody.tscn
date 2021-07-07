@@ -43,8 +43,8 @@ shader = SubResource( 5 )
 
 [node name="PlayerBody" type="RigidBody2D" groups=[
 "Players",
+"To_replicate",
 ]]
-position = Vector2( -0.707886, 0 )
 z_index = 1
 collision_layer = 2
 collision_mask = 3

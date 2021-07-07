@@ -70,7 +70,32 @@ func _player_connected(peer_id):
 				pass
 			GAME_PHASE.STARTED:
 				# initialize world to watch only?
+				# replicate it
+				propagate_replication(peer_id)
 				pass
+
+
+# get nodes that are not persistent and call replicate function on peer
+func propagate_replication(peer_id):
+	var to_replicate = get_tree().get_nodes_in_group("To_replicate")
+	for node in to_replicate:
+		rpc_id(peer_id, "replicate", str(node.get_path()), node.filename)
+	rpc_id(peer_id, "start_game")
+
+
+# create node and request info about variables that needs to be replicated
+# these variables are stored as strings in 'replication_vars' array 
+remote func replicate(node_path, node_resource):
+	var node_array = node_path.rsplit("/", true, 1)
+	var node_name = node_array[1]
+	var node_parent = node_array[0] 
+	var node = load(node_resource).instance()
+	node.name = node_name
+	# if node is e.g. player, input, physics etc. needs to be disabled
+	if node.has_method("online"): 
+		node.online(int(node_name))
+	get_node(node_parent).add_child(node)
+	node.rpc_id(1, "request_replication_info", my_peer_id)
 
 
 func _player_disconnected(peer_id):
@@ -115,7 +140,7 @@ remotesync func prepare_game():
 		for info_key in players_info[peer_id]:
 			match info_key:
 				"color":
-					new_player.self_modulate = players_info[peer_id][info_key]
+					new_player.modulate = players_info[peer_id][info_key]
 #				"nick":
 #					new_player.nick = player_info[peer_id][info_key]
 		world.add_child(new_player)

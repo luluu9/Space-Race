@@ -33,6 +33,8 @@ var missiles_target = []
 
 var current_item = Item.NONE
 
+var replication_vars = ["modulate"]
+
 
 func get_input():
 	thrust = Vector2()
@@ -194,6 +196,16 @@ func set_item(item):
 			Item.HOMING_MISSILE:
 				texture = load("res://Objects/Items/HomingMissile/Missile.png")
 		item_texture_container.texture = texture
+
+
+remote func request_replication_info(peer_id):
+	for repl_var in replication_vars:
+		rset_id(peer_id, repl_var, get(repl_var))
+
+
+func _ready():
+	for repl_var in replication_vars:
+		rset_config(repl_var, MultiplayerAPI.RPC_MODE_REMOTESYNC)
 
 
 # IDEAS FOR LAG COMPENSATION:

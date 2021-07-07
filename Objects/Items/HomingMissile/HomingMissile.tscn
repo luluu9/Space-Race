@@ -48,7 +48,10 @@ tracks/2/keys = {
 "values": [ false ]
 }
 
-[node name="Missile" type="Area2D"]
+[node name="Missile" type="Area2D" groups=[
+"Items",
+"To_replicate",
+]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource( 1 )
