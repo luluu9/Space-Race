@@ -3,7 +3,7 @@
 [ext_resource path="res://Objects/Maps/Map 1.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/Items/Bubble.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Items/Banana/Banana.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Objects/Controls/GameScreen.gd" type="Script" id=4]
+[ext_resource path="res://Objects/Controls/GameScreen/GameScreen.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/Main/Game.gd" type="Script" id=5]
 [ext_resource path="res://Objects/Controls/TitleScreen.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Objects/Controls/LobbyScreen.tscn" type="PackedScene" id=7]
@@ -22,16 +22,7 @@ visible = false
 [node name="LobbyScreen" parent="UI" instance=ExtResource( 7 )]
 visible = false
 
-[node name="GameScreen" type="Control" parent="UI"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = 0.561249
-margin_bottom = 0.561279
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="GameScreen" parent="UI" instance=ExtResource( 4 )]
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
 visible = false

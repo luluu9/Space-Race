@@ -190,3 +190,7 @@ func debug_player_disconnected(peer_id):
 
 func debug_server_disconnected():
 	get_tree().quit()
+
+
+# TODO:
+# - allow to replicate variables inside scenes like Timer time in the Banana scene
