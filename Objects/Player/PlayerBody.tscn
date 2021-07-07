@@ -1,11 +1,12 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Objects/Player/Particles/engine_fire_2.png" type="Texture" id=1]
-[ext_resource path="res://Objects/Player/ship_icon.png" type="Texture" id=2]
+[ext_resource path="res://Objects/Player/ship_body.png" type="Texture" id=2]
 [ext_resource path="res://Objects/Player/PlayerBody.gd" type="Script" id=3]
 [ext_resource path="res://Objects/Player/Particles/Particles.gd" type="Script" id=4]
 [ext_resource path="res://Objects/Player/Particles/side_thrust.png" type="Texture" id=5]
 [ext_resource path="res://Objects/Player/Particles/SideParticlesMaterial.tres" type="Material" id=6]
+[ext_resource path="res://Objects/Player/ship_wings.png" type="Texture" id=7]
 
 [sub_resource type="PhysicsMaterial" id=1]
 bounce = 0.34
@@ -61,7 +62,12 @@ process_mode = 0
 smoothing_enabled = true
 smoothing_speed = 10.0
 
-[node name="ship_icon" type="Sprite" parent="."]
+[node name="ship_wings" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 0.5, 1 )
+texture = ExtResource( 7 )
+
+[node name="ship_body" type="Sprite" parent="."]
 rotation = 1.5708
 scale = Vector2( 0.5, 1 )
 texture = ExtResource( 2 )
