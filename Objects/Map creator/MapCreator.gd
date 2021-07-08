@@ -10,8 +10,9 @@ extends Node2D
 # To delete bubble use SHIFT+LMB
 # To delete bezier point use SHIFT+LMB
 # To change current bezier use RMB
+# To change an existing map put a map scene into the inspector variable current_map
 
-var current_map = null
+export (PackedScene) var current_map = null
 var current_bezier = null
 var current_startpoint = null
 
@@ -34,7 +35,14 @@ var current_bubble = null
 
 func _ready():
 	line_edit.connect("text_entered", self, "save_map")
-	create_map()
+	if current_map:
+		current_map = current_map.instance()
+		var beziers = current_map.get_beziers()
+		if beziers:
+			current_bezier = beziers[0]
+		add_child(current_map)
+	else:
+		create_map()
 
 
 func _input(event):
@@ -164,7 +172,7 @@ func name_map():
 # POINTS
 func get_point_on_cursor(mouse_pos):
 	for bezier in current_map.get_beziers():
-		for point in bezier.get_children(): # i have to work on nodes, not points positions
+		for point in bezier.get_children():
 			if mouse_pos.distance_to(point.position) < SELECTION_DISTANCE:
 				return point
 	return null

@@ -6,6 +6,7 @@ var WIDTH = 5
 
 onready var startpoint = get_node("startpoint")
 
+
 func _ready():
 	update()
 	if not Engine.editor_hint:
@@ -15,10 +16,12 @@ func _ready():
 func get_startpoint():
 	return startpoint.position
 
+
 func create_collision_shapes():
 	for bezier in get_beziers():
 		var points = bezier.get_points()
 		create_collision_shape(get_bezier_points(points))
+
 
 func get_beziers():
 	var beziers = []
@@ -26,6 +29,7 @@ func get_beziers():
 		if node.name.begins_with("bezier"):
 			beziers.append(node)
 	return beziers
+
 
 func get_bezier_points(points):
 	var bezier_points = []
@@ -41,15 +45,18 @@ func get_bezier_points(points):
 			bezier_points.push_back( point )
 	return bezier_points
 
+
 func get_bezier_2(step, A, B, C):
 	var t = float(step) / STEPS
 	var t_1 = 1 - t
 	return pow( t_1, 2 ) * A + 2 * t * t_1 * B + pow( t, 2 ) * C
 
+
 func get_bezier_3(step, A, cA, B, cB):
 	var t = float(step) / STEPS
 	var t_1 = 1 - t
 	return pow( t_1, 3 ) * A + 3 * t * pow( t_1, 2 ) * cA + 3 * pow( t, 2 ) * t_1 * cB + pow( t, 3 ) * B
+
 
 func draw_bezier(bezier_points):
 	if len(bezier_points) < 2:
@@ -75,6 +82,7 @@ func create_collision_shape(points): # https://godotengine.org/qa/23638/why-aren
 	shape.set_segments(poly_points)
 	col.set_shape(shape)
 	add_child(col)
+
 
 func _draw():
 	var beziers = self.get_beziers()
