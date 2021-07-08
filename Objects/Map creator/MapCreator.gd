@@ -37,7 +37,6 @@ func _input(event):
 	var save = Input.is_action_just_pressed("MAP_SAVE")
 	var create = Input.is_action_just_pressed("MAP_CREATE")
 	var create_startpoint = Input.is_action_just_pressed("MAP_CSTARTPOINT")
-	print(line_edit.get_focus_owner())
 	if line_edit.get_focus_owner():
 		return
 	if create: # CREATE BEZIER

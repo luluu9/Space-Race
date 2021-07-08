@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Objects/Map creator/MapCreator.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Map creator/Camera2D.gd" type="Script" id=2]
+[ext_resource path="res://Fonts/LobbyScreen.tres" type="DynamicFont" id=3]
 
 [node name="map_generator" type="Node2D"]
 script = ExtResource( 1 )
@@ -26,10 +27,12 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -52.5
-margin_top = -12.0
-margin_right = 52.5
-margin_bottom = 12.0
+margin_left = -100.0
+margin_top = -50.0
+margin_right = 100.0
+margin_bottom = 50.0
+custom_fonts/font = ExtResource( 3 )
+align = 1
 placeholder_text = "Nazwa..."
 __meta__ = {
 "_edit_use_anchors_": false

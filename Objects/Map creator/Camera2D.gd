@@ -7,6 +7,7 @@ var SNAP_MARGIN = 5 # on one side, totally SNAP_MARGIN * 2
 
 var VECTOR_ZOOM = Vector2(0.5, 0.5)
 
+
 func _unhandled_input(event):
 	if event is InputEventKey:
 		if event.pressed:
@@ -20,7 +21,6 @@ func _unhandled_input(event):
 			if event.scancode == KEY_D:
 				position.x += CURR_SPEED
 			update()
-
 	if event is InputEventMouseButton:
 		if event.is_pressed():
 			var mouse_pos = get_global_mouse_position()
@@ -34,6 +34,7 @@ func _unhandled_input(event):
 				position = (position - mouse_pos) * new_zoom / zoom + mouse_pos
 				zoom = new_zoom
 				update()
+
 
 func draw_grid():
 	var res = get_viewport_rect().size
@@ -50,6 +51,7 @@ func draw_grid():
 	for i in range(0, ceil(res.y / GAP / zoom.y)): # HORIZONTAL
 		var pos_y = i * CURR_GAP + move_y
 		draw_line(Vector2(0, pos_y), Vector2(res.x, pos_y), Color(0.4, 0.4, 0.4, 0.8), 1)
+
 
 func get_snap_point(point):
 	var res = get_viewport_rect().size
