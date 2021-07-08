@@ -3,8 +3,11 @@ extends Node2D
 ### MAP CREATOR ###
 # To create new map save existing by CTRL+S
 # To create new bezier points use LMB
+# To create new bezier line use N
 # To create new bezier use N
 # To create spawnpoint use M
+# To create bubble use B
+# To delete bubble use SHIFT+LMB
 # To delete bezier point use SHIFT+LMB
 # To change current bezier use RMB
 
@@ -24,6 +27,9 @@ onready var grid = get_node("Camera2D")
 onready var popup = get_node("CanvasLayer/Popup")
 onready var line_edit = get_node("CanvasLayer/Popup/LineEdit")
 
+onready var bubble_scene = load("res://Objects/Items/Bubble.tscn")
+var bubble_radius = null
+var current_bubble = null
 
 
 func _ready():
@@ -34,20 +40,31 @@ func _ready():
 func _input(event):
 	var ctrl = Input.is_key_pressed(KEY_CONTROL)
 	var shift = Input.is_key_pressed(KEY_SHIFT)
+	var lmb = Input.is_mouse_button_pressed(BUTTON_LEFT)
 	var save = Input.is_action_just_pressed("MAP_SAVE")
-	var create = Input.is_action_just_pressed("MAP_CREATE")
-	var create_startpoint = Input.is_action_just_pressed("MAP_CSTARTPOINT")
+	var create_bezier = Input.is_action_just_pressed("MAP_CREATE_BEZIER")
+	var create_bubble = Input.is_action_just_pressed("MAP_CREATE_BUBBLE")
+	var create_startpoint = Input.is_action_just_pressed("MAP_STARTPOINT")
+	var mouse_pos = get_global_mouse_position()
+	current_bubble = get_bubble_on_mouse()
 	if line_edit.get_focus_owner():
 		return
-	if create: # CREATE BEZIER
+	if create_bezier: # CREATE BEZIER
 		if current_map:
 			create_bezier()
+	elif create_bubble:
+		create_bubble()
 	elif create_startpoint:
 		create_startpoint()
 	elif ctrl and save:
 		name_map()
-	
-	var mouse_pos = get_global_mouse_position()
+	elif ctrl and current_bubble: 
+		current_bubble.queue_free()
+	elif current_bubble and lmb:
+		current_bubble.position = mouse_pos
+		return # to prevent creating new bezier points
+	elif current_bubble and shift:
+		current_bubble.queue_free()
 	
 	# CHANGE POSITION OF POINT
 	if pressed:
@@ -123,6 +140,13 @@ func create_startpoint():
 	update()
 
 
+func create_bubble():
+	var new_bubble = bubble_scene.instance()
+	new_bubble.position = grid.get_snap_point(get_global_mouse_position())
+	current_map.add_child(new_bubble)
+	new_bubble.set_owner(current_map)
+
+
 func save_map(map_name):
 	current_map.name = map_name
 	var packed_map = PackedScene.new()
@@ -144,6 +168,17 @@ func get_point_on_cursor(mouse_pos):
 			if mouse_pos.distance_to(point.position) < SELECTION_DISTANCE:
 				return point
 	return null
+
+
+# GETTING BUBBLES
+func get_bubble_on_mouse():
+	var mouse_pos = get_global_mouse_position()
+	for node in current_map.get_children():
+		if "Bubble" in node.name:
+			if not bubble_radius:
+				bubble_radius = node.get_node("CollisionShape2D").shape.radius
+			if abs((node.position - mouse_pos).length()) < bubble_radius:
+				return node
 
 
 func _draw():
