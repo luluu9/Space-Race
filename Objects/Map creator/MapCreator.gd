@@ -32,6 +32,10 @@ onready var bubble_scene = load("res://Objects/Items/Bubble.tscn")
 var bubble_radius = null
 var current_bubble = null
 
+onready var start_line_scene = load("res://Objects/Map creator/StartLine.tscn")
+var current_start_line = null
+var start_line_editing = false
+
 
 func _ready():
 	line_edit.connect("text_entered", self, "save_map")
@@ -53,6 +57,7 @@ func _input(event):
 	var create_bezier = Input.is_action_just_pressed("MAP_CREATE_BEZIER")
 	var create_bubble = Input.is_action_just_pressed("MAP_CREATE_BUBBLE")
 	var create_startpoint = Input.is_action_just_pressed("MAP_STARTPOINT")
+	var create_startline = Input.is_action_just_pressed("MAP_CREATE_STARTLINE")
 	var mouse_pos = get_global_mouse_position()
 	current_bubble = get_bubble_on_mouse()
 	if line_edit.get_focus_owner():
@@ -73,6 +78,15 @@ func _input(event):
 		return # to prevent creating new bezier points
 	elif current_bubble and shift:
 		current_bubble.queue_free()
+	elif create_startline:
+		create_start_line()
+	
+	if start_line_editing:
+		var start_line_size = mouse_pos - current_start_line.position
+		current_start_line.change_size(start_line_size)
+		if lmb: # stop editing start line
+			start_line_editing = false
+		return
 	
 	# CHANGE POSITION OF POINT
 	if pressed:
@@ -119,7 +133,6 @@ func create_bezier():
 	
 	current_map.add_child(bezier)
 	bezier.set_owner(current_map) # for saving
-	
 	current_bezier = bezier
 
 
@@ -131,7 +144,6 @@ func create_point():
 	
 	current_bezier.add_child(point)
 	point.set_owner(current_map) # for saving
-	
 	update()
 
 
@@ -144,8 +156,19 @@ func create_startpoint():
 	
 	current_map.add_child(current_startpoint)
 	current_startpoint.set_owner(current_map) # for saving
-	
 	update()
+
+
+func create_start_line():
+	if current_start_line:
+		current_start_line.free()
+	current_start_line = start_line_scene.instance()
+	current_start_line.name = "start_line"
+	current_start_line.position = grid.get_snap_point(get_global_mouse_position())
+	
+	current_map.add_child(current_start_line)
+	current_start_line.set_owner(current_map) # for saving
+	start_line_editing = true
 
 
 func create_bubble():
