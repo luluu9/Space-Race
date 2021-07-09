@@ -6,7 +6,7 @@ signal info_updated(updated_info)
 
 enum GAME_PHASE {INIT, LOBBY, LOADING, STARTED}
 
-export (bool) var debug = false
+export (bool) var debug = true
 
 var SERVER_PORT = 6996
 var MAX_PLAYERS = 4

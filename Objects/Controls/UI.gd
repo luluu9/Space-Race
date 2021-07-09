@@ -9,7 +9,12 @@ func _ready():
 	Networking.connect("connection_created", self, "_on_Networking_connection_created")
 	# warning-ignore:return_value_discarded
 	Networking.connect("game_started", self, "_on_Networking_game_started")
-	show_screen("TitleScreen")
+	# instead of this i should use game_started signal, but it appears 
+	# that networking singleton emits signal before initialization of this node
+	if Networking.debug: 
+		_on_Networking_game_started()
+	else:
+		show_screen("TitleScreen")
 
 
 func show_screen(screenName):
