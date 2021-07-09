@@ -198,6 +198,14 @@ func set_item(item):
 		item_texture_container.texture = texture
 
 
+func immobilize():
+	set_use_custom_integrator(true)
+
+
+func run():
+	set_use_custom_integrator(false)
+
+
 remote func request_replication_info(peer_id):
 	for repl_var in replication_vars:
 		rset_id(peer_id, repl_var, get(repl_var))

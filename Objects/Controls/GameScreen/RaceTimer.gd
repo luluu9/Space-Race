@@ -2,7 +2,7 @@ extends Control
 
 signal start_race
 var texts = ["3...", "2...", "1...", "GO!!!"]
-
+onready var world = get_node("/root/Game")
 
 func _ready():
 	# warning-ignore:return_value_discarded
@@ -10,8 +10,14 @@ func _ready():
 
 
 func start():
-	next_text()
-	$Timer.start()
+	if not Networking.debug:
+		var player = world.get_node(str(Networking.my_peer_id))
+		player.immobilize()
+		# warning-ignore:return_value_discarded
+		connect("start_race", player, "run")
+		self.visible = true
+		next_text()
+		$Timer.start()
 
 
 func _on_Timer_timeout():
