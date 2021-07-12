@@ -44,6 +44,7 @@ func _ready():
 		var beziers = current_map.get_beziers()
 		if beziers:
 			current_bezier = beziers[0]
+		current_start_line = current_map.get_node_or_null("start_line")
 		add_child(current_map)
 	else:
 		create_map()
@@ -167,6 +168,12 @@ func create_start_line():
 	current_start_line.position = grid.get_snap_point(get_global_mouse_position())
 	
 	current_map.add_child(current_start_line)
+	# there is some unexpected behaviour: properties of start_line children nodes
+	# are not saved, we have to call set_owner of theses nodes to current_map
+	# but it creates copy of them instead of changing owner
+	# // to investigate, currently works as workaround
+	for node in current_start_line.get_children():
+		node.set_owner(current_map)
 	current_start_line.set_owner(current_map) # for saving
 	start_line_editing = true
 

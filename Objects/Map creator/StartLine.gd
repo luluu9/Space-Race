@@ -4,10 +4,6 @@ onready var texture_rect = $TextureRect
 onready var collision_shape = $CollisionShape2D
 
 
-func _ready():
-	change_size(Vector2(100, 100))
-
-
 func change_size(new_size):
 	# texture rect does not allow negative size, thus Rect2D covers this aspect
 	# with the abs() method
@@ -17,3 +13,6 @@ func change_size(new_size):
 	collision_shape.shape.extents = new_size/2
 	collision_shape.position = new_size/2
 
+
+func get_rect():
+	return texture_rect.get_rect()
