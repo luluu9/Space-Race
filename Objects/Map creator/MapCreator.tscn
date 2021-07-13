@@ -1,11 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Objects/Map creator/MapCreator.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Map creator/Camera2D.gd" type="Script" id=2]
 [ext_resource path="res://Fonts/LobbyScreen.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Objects/Maps/test_startline.tscn" type="PackedScene" id=4]
 
 [node name="MapCreator" type="Node2D"]
 script = ExtResource( 1 )
+current_map = ExtResource( 4 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
