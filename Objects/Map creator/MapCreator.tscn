@@ -3,7 +3,7 @@
 [ext_resource path="res://Objects/Map creator/MapCreator.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Map creator/Camera2D.gd" type="Script" id=2]
 [ext_resource path="res://Fonts/LobbyScreen.tres" type="DynamicFont" id=3]
-[ext_resource path="res://Objects/Maps/test_startline.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Objects/Maps/Map 1.tscn" type="PackedScene" id=4]
 
 [node name="MapCreator" type="Node2D"]
 script = ExtResource( 1 )

@@ -1,0 +1,238 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Objects/Map creator/Map.gd" type="Script" id=1]
+[ext_resource path="res://Objects/Map creator/Bezier.gd" type="Script" id=2]
+[ext_resource path="res://Objects/Items/Bubble.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/Map creator/start_line.png" type="Texture" id=5]
+[ext_resource path="res://Objects/Map creator/StartLine.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 69.6875, 133.125 )
+
+[node name="Map" type="StaticBody2D"]
+script = ExtResource( 1 )
+
+[node name="bezier_1" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_1"]
+position = Vector2( 200, 400 )
+
+[node name="point_2" type="Node2D" parent="bezier_1"]
+position = Vector2( 792, 400 )
+
+[node name="bezier_2" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_2"]
+position = Vector2( 794, 400 )
+
+[node name="point_1" type="Node2D" parent="bezier_2"]
+position = Vector2( 1000, 400 )
+
+[node name="point_2" type="Node2D" parent="bezier_2"]
+position = Vector2( 1000, 200 )
+
+[node name="bezier_3" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_3"]
+position = Vector2( 1000, 200 )
+
+[node name="point_1" type="Node2D" parent="bezier_3"]
+position = Vector2( 1000, -200 )
+
+[node name="bezier_4" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_4"]
+position = Vector2( 1000, -200 )
+
+[node name="point_1" type="Node2D" parent="bezier_4"]
+position = Vector2( 1000, -400 )
+
+[node name="point_2" type="Node2D" parent="bezier_4"]
+position = Vector2( 700, -400 )
+
+[node name="point_3" type="Node2D" parent="bezier_4"]
+position = Vector2( 600, -300 )
+
+[node name="bezier_5" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_5"]
+position = Vector2( 600, -300 )
+
+[node name="point_1" type="Node2D" parent="bezier_5"]
+position = Vector2( 500, -200 )
+
+[node name="point_2" type="Node2D" parent="bezier_5"]
+position = Vector2( 200, -300 )
+
+[node name="bezier_6" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_6"]
+position = Vector2( 200, -300 )
+
+[node name="point_1" type="Node2D" parent="bezier_6"]
+position = Vector2( -200, -500 )
+
+[node name="bezier_7" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_7"]
+position = Vector2( -200, -500 )
+
+[node name="point_1" type="Node2D" parent="bezier_7"]
+position = Vector2( -400, -600 )
+
+[node name="point_2" type="Node2D" parent="bezier_7"]
+position = Vector2( -606.75, -476.5 )
+
+[node name="point_3" type="Node2D" parent="bezier_7"]
+position = Vector2( -700, -106.5 )
+
+[node name="bezier_8" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_8"]
+position = Vector2( -700, -106.5 )
+
+[node name="point_1" type="Node2D" parent="bezier_8"]
+position = Vector2( -700, 200 )
+
+[node name="point_2" type="Node2D" parent="bezier_8"]
+position = Vector2( -400, 300 )
+
+[node name="point_3" type="Node2D" parent="bezier_8"]
+position = Vector2( -200, 147.5 )
+
+[node name="bezier_9" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_9"]
+position = Vector2( -200, -306.5 )
+
+[node name="point_1" type="Node2D" parent="bezier_9"]
+position = Vector2( 255.25, -118.5 )
+
+[node name="point_2" type="Node2D" parent="bezier_9"]
+position = Vector2( 200, 100 )
+
+[node name="bezier_10" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_10"]
+position = Vector2( -200, 149.5 )
+
+[node name="point_1" type="Node2D" parent="bezier_10"]
+position = Vector2( 0, 100 )
+
+[node name="point_2" type="Node2D" parent="bezier_10"]
+position = Vector2( 0, 400 )
+
+[node name="bezier_11" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_11"]
+position = Vector2( 0, 400 )
+
+[node name="point_1" type="Node2D" parent="bezier_11"]
+position = Vector2( 200, 400 )
+
+[node name="bezier_12" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_12"]
+position = Vector2( -200, -308.5 )
+
+[node name="point_1" type="Node2D" parent="bezier_12"]
+position = Vector2( -300, -392.5 )
+
+[node name="point_2" type="Node2D" parent="bezier_12"]
+position = Vector2( -500, -200 )
+
+[node name="point_3" type="Node2D" parent="bezier_12"]
+position = Vector2( -500, -100 )
+
+[node name="bezier_13" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_13"]
+position = Vector2( -500, -100 )
+
+[node name="point_1" type="Node2D" parent="bezier_13"]
+position = Vector2( -400, 0 )
+
+[node name="point_2" type="Node2D" parent="bezier_13"]
+position = Vector2( -100, -100 )
+
+[node name="bezier_14" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_14"]
+position = Vector2( 200, 100 )
+
+[node name="point_1" type="Node2D" parent="bezier_14"]
+position = Vector2( 600, 100 )
+
+[node name="bezier_15" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_15"]
+position = Vector2( 600, 100 )
+
+[node name="point_1" type="Node2D" parent="bezier_15"]
+position = Vector2( 800, 100 )
+
+[node name="point_2" type="Node2D" parent="bezier_15"]
+position = Vector2( 800, -100 )
+
+[node name="bezier_16" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="bezier_17" type="Node2D" parent="."]
+script = ExtResource( 2 )
+
+[node name="point_0" type="Node2D" parent="bezier_17"]
+position = Vector2( 800, -100 )
+
+[node name="point_1" type="Node2D" parent="bezier_17"]
+position = Vector2( 500, 105.5 )
+
+[node name="point_2" type="Node2D" parent="bezier_17"]
+position = Vector2( 200, -100 )
+
+[node name="startpoint" type="Node2D" parent="."]
+position = Vector2( 505.25, 131.5 )
+
+[node name="start_line" parent="." instance=ExtResource( 7 )]
+position = Vector2( 200, 114.375 )
+
+[node name="TextureRect" type="TextureRect" parent="start_line"]
+margin_right = 1393.75
+margin_bottom = 2662.5
+rect_scale = Vector2( 0.1, 0.1 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="start_line"]
+position = Vector2( 69.6875, 133.125 )
+shape = SubResource( 1 )
+
+[node name="Bubble" parent="." instance=ExtResource( 3 )]
+position = Vector2( 650, 125 )
+
+[node name="@Bubble@22" parent="." instance=ExtResource( 3 )]
+position = Vector2( 650, 200 )
+
+[node name="@Bubble@23" parent="." instance=ExtResource( 3 )]
+position = Vector2( 650, 275 )
+
+[node name="@Bubble@24" parent="." instance=ExtResource( 3 )]
+position = Vector2( 650, 350 )
