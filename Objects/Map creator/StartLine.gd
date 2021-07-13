@@ -6,8 +6,9 @@ var collision_shape = null
 func _ready():
 	# because of two same nodes, we have to eliminate default ones
 	var children = get_children()
-	for i in range(2):
-		children[i].free()
+	if len(children) == 4:
+		for i in range(2):
+			children[i].free()
 	texture_rect = $TextureRect
 	collision_shape = $CollisionShape2D
 
