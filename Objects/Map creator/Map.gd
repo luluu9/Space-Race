@@ -27,8 +27,10 @@ func get_start_positions(players_amount):
 		return null
 	var start_positions = []
 	var rect = start_line.get_texture_rect_real() # Rect2(Vector2(0, 0), Vector2(200, 100))
-	print(rect)
 	var mid = rect.position + rect.size/2
+	if players_amount == 1:
+		start_positions.append(mid)
+		return start_positions
 	if start_direction == DIR.UP or start_direction == DIR.DOWN: 
 		# horizontal
 		var gap = (rect.size.x-STARTLINE_MARGIN*2)/(players_amount-1)
