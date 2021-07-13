@@ -11,6 +11,7 @@ func _ready():
 			children[i].free()
 	texture_rect = $TextureRect
 	collision_shape = $CollisionShape2D
+	update_collision_shape()
 
 
 func change_size(new_size):
@@ -19,6 +20,12 @@ func change_size(new_size):
 	var texture_new_rect = Rect2(position, new_size).abs()
 	texture_rect.rect_position = texture_new_rect.position-position
 	texture_rect.rect_size = texture_new_rect.size*10
+	collision_shape.shape.extents = new_size/2
+	collision_shape.position = new_size/2
+
+
+func update_collision_shape():
+	var new_size = get_texture_rect_real().size
 	collision_shape.shape.extents = new_size/2
 	collision_shape.position = new_size/2
 
