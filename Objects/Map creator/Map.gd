@@ -22,11 +22,12 @@ func get_startpoint():
 	return startpoint.position
 
 
+# returns start positions according to local coordinate StartLine
 func get_start_positions(players_amount):
 	if not start_line:
 		return null
 	var start_positions = []
-	var rect = start_line.get_texture_rect_real() # Rect2(Vector2(0, 0), Vector2(200, 100))
+	var rect = start_line.get_texture_rect_real()
 	var mid = rect.position + rect.size/2
 	if players_amount == 1:
 		start_positions.append(mid)

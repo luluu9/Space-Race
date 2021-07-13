@@ -23,3 +23,4 @@ visible = false
 [node name="GameScreen" parent="UI" instance=ExtResource( 4 )]
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
+visible = false
