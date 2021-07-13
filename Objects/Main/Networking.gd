@@ -135,6 +135,7 @@ remotesync func player_ready(_peer_id):
 
 remotesync func prepare_game():
 	get_tree().set_pause(true)
+	world.prepare_start(len(players_info))
 	for peer_id in players_info:
 		var new_player = player_scene.instance()
 		for info_key in players_info[peer_id]:
@@ -143,7 +144,7 @@ remotesync func prepare_game():
 					new_player.get_node("ship_wings").self_modulate = players_info[peer_id][info_key]
 #				"nick":
 #					new_player.nick = player_info[peer_id][info_key]
-		world.add_child(new_player)
+		world.add_player(new_player)
 		new_player.online(peer_id)
 	rpc_id(1, "player_ready", my_peer_id)
 

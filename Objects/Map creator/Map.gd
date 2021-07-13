@@ -1,20 +1,56 @@
 tool # must have for preview in editor
 extends StaticBody2D
 
+enum DIR {UP=270, RIGHT=0, DOWN=90, LEFT=180}
+
 var STEPS = 25
 var WIDTH = 5
+var STARTLINE_MARGIN = 25
 
 onready var startpoint = get_node("startpoint")
+onready var start_line = get_node_or_null("start_line")
 
+var startpoints = []
+
+export (DIR) var start_direction = DIR.UP
 
 func _ready():
 	update()
+	for point in get_start_positions(5):
+		var start_sprite = Sprite.new()
+		start_sprite.set_texture(preload("res://Objects/Player/ship_icon.png"))
+		start_sprite.position = point
+		start_sprite.rotation = deg2rad(90+start_direction)
+		
+		print(start_sprite.position)
+		start_line.add_child(start_sprite)
 	if not Engine.editor_hint:
 		create_collision_shapes()
 
 
 func get_startpoint():
 	return startpoint.position
+
+
+func get_start_positions(players_amount):
+	if not start_line:
+		return null
+	var start_positions = []
+	var rect = start_line.get_texture_rect_real() # Rect2(Vector2(0, 0), Vector2(200, 100))
+	var mid = rect.position + rect.size/2
+	if start_direction == DIR.UP or start_direction == DIR.DOWN: 
+		# horizontal
+		var gap = (rect.size.x-STARTLINE_MARGIN*2)/(players_amount-1)
+		var first_pos = Vector2(rect.position.x+STARTLINE_MARGIN, mid.y)
+		for i in range(players_amount):
+			start_positions.append(first_pos+Vector2(i*gap, 0))
+	else: 
+		# vertical
+		var gap = (rect.size.y-STARTLINE_MARGIN*2)/(players_amount-1)
+		var first_pos = Vector2(mid.x, rect.position.y+STARTLINE_MARGIN)
+		for i in range(players_amount):
+			start_positions.append(first_pos+Vector2(0, i*gap))
+	return start_positions
 
 
 func create_collision_shapes():

@@ -22,5 +22,9 @@ func change_size(new_size):
 	collision_shape.position = new_size/2
 
 
-func get_texture_rect():
-	return texture_rect.get_rect()
+# returns rect of texture appropriate to scale property
+func get_texture_rect_real():
+	var rect = texture_rect.get_rect()
+	rect.size /= 10
+	rect.position /= 10
+	return rect

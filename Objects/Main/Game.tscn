@@ -1,8 +1,6 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Objects/Maps/Map 1.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Objects/Items/Bubble.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Objects/Items/Banana/Banana.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Objects/Maps/test_startline.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Objects/Controls/GameScreen/GameScreen.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Objects/Main/Game.gd" type="Script" id=5]
 [ext_resource path="res://Objects/Controls/TitleScreen.tscn" type="PackedScene" id=6]
@@ -26,9 +24,4 @@ visible = false
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
 visible = false
-
-[node name="Banana" parent="Map" instance=ExtResource( 3 )]
-position = Vector2( 358.763, 268.652 )
-
-[node name="Bubble" parent="Map" instance=ExtResource( 2 )]
-position = Vector2( 96.1666, 171.827 )
+start_direction = 0
