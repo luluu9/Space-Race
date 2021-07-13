@@ -1,7 +1,15 @@
 extends Area2D
 
-onready var texture_rect = $TextureRect
-onready var collision_shape = $CollisionShape2D
+var texture_rect = null
+var collision_shape = null
+
+func _ready():
+	# because of two same nodes, we have to eliminate default ones
+	var children = get_children()
+	for i in range(2):
+		children[i].free()
+	texture_rect = $TextureRect
+	collision_shape = $CollisionShape2D
 
 
 func change_size(new_size):
@@ -14,5 +22,5 @@ func change_size(new_size):
 	collision_shape.position = new_size/2
 
 
-func get_rect():
+func get_texture_rect():
 	return texture_rect.get_rect()
