@@ -17,7 +17,7 @@ func get_map():
 	return get_node("Map")
 
 
-func prepare_start():
+func prepare_start(player_quantity):
 	pass
 
 
