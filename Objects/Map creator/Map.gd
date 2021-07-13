@@ -10,20 +10,10 @@ var STARTLINE_MARGIN = 25
 onready var startpoint = get_node("startpoint")
 onready var start_line = get_node_or_null("start_line")
 
-var startpoints = []
-
 export (DIR) var start_direction = DIR.UP
 
 func _ready():
 	update()
-	for point in get_start_positions(5):
-		var start_sprite = Sprite.new()
-		start_sprite.set_texture(preload("res://Objects/Player/ship_icon.png"))
-		start_sprite.position = point
-		start_sprite.rotation = deg2rad(90+start_direction)
-		
-		print(start_sprite.position)
-		start_line.add_child(start_sprite)
 	if not Engine.editor_hint:
 		create_collision_shapes()
 
@@ -37,6 +27,7 @@ func get_start_positions(players_amount):
 		return null
 	var start_positions = []
 	var rect = start_line.get_texture_rect_real() # Rect2(Vector2(0, 0), Vector2(200, 100))
+	print(rect)
 	var mid = rect.position + rect.size/2
 	if start_direction == DIR.UP or start_direction == DIR.DOWN: 
 		# horizontal
@@ -125,3 +116,15 @@ func _draw():
 	for bezier in beziers:
 		var points = bezier.get_points()
 		draw_bezier(get_bezier_points(points))
+
+
+### DEBUG ###
+func draw_starting_positions(players_quantity=5):
+	var startpoints = get_start_positions(players_quantity)
+	if startpoints:
+		for point in startpoints:
+			var start_sprite = Sprite.new()
+			start_sprite.set_texture(preload("res://Objects/Player/ship_icon.png"))
+			start_sprite.position = point
+			start_sprite.rotation = deg2rad(90+start_direction)
+			start_line.add_child(start_sprite)
