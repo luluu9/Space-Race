@@ -4,23 +4,25 @@ Main goal of this project is to create an enjoyable Mario Kart style game in a 2
 
 ## Currently done
 - vehicle physics
-- networking implementation (in progress)
+- networking implementation (still in progress)
 - powerups mechanics
 - player movement extrapolation
 - lobby UI
 - map creator using Bezier curves
+- game starting (like in other racing games)
+- viewer node
 
 
 ## To implement
 - more powerups
-- improve player exit handling
-- game starting (like in other racing games)
 - laps counting
 - better game UI
+- upgrades for the map creator
 
 
 ## Game preview
 ![Player controls spaceship drives at high speed along a track and shoots missiles to other player](/Images/Game_preview_video.gif)
+![Image about creating using Bezier curves](/Images/Map_creator_preview.png)
 
 
 ## Info
