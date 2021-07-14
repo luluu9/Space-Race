@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Objects/Player/ViewerCamera.gd" type="Script" id=1]
+
+[node name="ViewerCamera" type="Camera2D"]
+anchor_mode = 0
+current = true
+smoothing_enabled = true
+script = ExtResource( 1 )

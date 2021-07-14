@@ -13,6 +13,7 @@ var MAX_PLAYERS = 4
 var HOST_IP = "127.0.0.1"
 
 onready var player_scene = preload("res://Objects/Player/PlayerBody.tscn")
+onready var viewer_scene = preload("res://Objects/Player/ViewerCamera.tscn")
 onready var world = get_node_or_null("/root/Game")
 
 # players_info:
@@ -69,10 +70,10 @@ func _player_connected(peer_id):
 			GAME_PHASE.LOBBY:
 				pass
 			GAME_PHASE.STARTED:
-				# initialize world to watch only?
-				# replicate it
+				# TODO: investigate why input somewhat works on viewer
+				# and why engine particles are not synchronized
 				propagate_replication(peer_id)
-				pass
+				rpc_id(peer_id, "create_viewer")
 
 
 # get nodes that are not persistent and call replicate function on peer
@@ -96,6 +97,11 @@ remote func replicate(node_path, node_resource):
 		node.online(int(node_name))
 	get_node(node_parent).add_child(node)
 	node.rpc_id(1, "request_replication_info", my_peer_id)
+
+
+remote func create_viewer():
+	var viewer = viewer_scene.instance()
+	add_child(viewer)
 
 
 func _player_disconnected(peer_id):
