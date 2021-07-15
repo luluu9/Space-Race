@@ -9,6 +9,7 @@ var acceleration = Vector2.ZERO
 var ally = null
 var target = null
 var exploded = false
+var protect_ally = true
 
 onready var world = get_node("/root/Game")
 
@@ -78,7 +79,8 @@ func _process(_delta):
 func _on_Missile_body_entered(body):
 	if is_network_master():
 		var players = get_tree().get_nodes_in_group("Players")
-		if len(players) > 1 and body == ally:
+		# prevent exploding on a caller body for the first seconds
+		if len(players) > 1 and body == ally and protect_ally: 
 			return
 		if not exploded:
 			rpc("explode", int(body.name), position)
@@ -104,3 +106,7 @@ remotesync func explode(body_peer_id, _position=null):
 			body.apply_impulse(offset, Vector2(hit_force, 0).rotated(rotation))
 		yield($AnimationPlayer, "animation_finished")
 		queue_free()
+
+
+func _on_ProctectTimer_timeout():
+	protect_ally = false
