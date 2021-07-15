@@ -6,10 +6,11 @@ onready var camera_y = get_camera_size().y
 var MARGIN = 200
 
 
-func _process(delta):
+func _process(_delta):
 	set_camera_position()
-	
 
+
+# set camera to enclose every player
 func set_camera_position():
 	var rect_to_show = get_players_rect()
 	var camera_ratio_x = rect_to_show.size.x/camera_x

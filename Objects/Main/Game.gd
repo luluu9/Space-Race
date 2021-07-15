@@ -35,7 +35,7 @@ func prepare_start(_players_ids):
 	# if map hasn't got a start line, use the start point
 	if not start_positions:
 		start_positions = []
-		for i in range(len(players_ids)):
+		for _i in range(len(players_ids)):
 			start_positions.append(get_map().get_startpoint())
 	else:
 		start_line_position = get_map().start_line.position

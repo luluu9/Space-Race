@@ -1,17 +1,19 @@
 extends Control
 
 signal start_race
+
 var texts = ["3...", "2...", "1...", "GO!!!"]
 var current_texts = texts.duplicate()
 onready var world = get_node("/root/Game")
+
 
 func _ready():
 	# warning-ignore:return_value_discarded
 	Networking.connect("game_started", self, "start")
 
 
+# immobilize the player and start count down
 func start():
-	print("START", current_texts)
 	if not Networking.debug:
 		var player = world.get_map().get_node(str(Networking.my_peer_id))
 		player.immobilize()
@@ -22,10 +24,13 @@ func start():
 		$Timer.start()
 
 
+# on each timeout change text
 func _on_Timer_timeout():
 	next_text()
 
 
+# change text and tween alpha.
+# if every text is used, change properties to original in case of a game reset
 func next_text():
 	var new_text = current_texts.pop_front()
 	if new_text:

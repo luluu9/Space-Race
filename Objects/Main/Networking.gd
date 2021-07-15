@@ -40,7 +40,8 @@ func _ready():
 			world.get_lobby_screen().connect("start_game", self, "load_game")
 
 
-func _input(event): # called only on server
+# called only on server in case if host wants to reset the game
+func _input(_event):
 	if Input.is_action_just_pressed("RESET") and game_phase == GAME_PHASE.STARTED:
 		print("RESET")
 		load_game()
