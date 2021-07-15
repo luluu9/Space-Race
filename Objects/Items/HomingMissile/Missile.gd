@@ -99,7 +99,7 @@ remotesync func explode(body_peer_id, _position=null):
 		$AnimationPlayer.play("explode")
 		# apply an impulse only on the affected player (position is synchronized)
 		if get_tree().get_network_unique_id() == body_peer_id:
-			var body = world.get_node(str(body_peer_id))
+			var body = world.get_map().get_node(str(body_peer_id))
 			var offset = body.position - self.position
 			body.apply_impulse(offset, Vector2(hit_force, 0).rotated(rotation))
 		yield($AnimationPlayer, "animation_finished")

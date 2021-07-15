@@ -29,6 +29,7 @@ var players_ready = 0
 
 
 func _ready():
+	set_process_input(false)
 	if world: # if null it means that specific scene is running
 		if debug:
 			var my_id = debug_create_connection()
@@ -38,6 +39,12 @@ func _ready():
 			world.get_title_screen().connect("host", self, "create_connection")
 			world.get_lobby_screen().connect("start_game", self, "load_game")
 
+
+func _input(event): # called only on server
+	if Input.is_action_just_pressed("RESET") and game_phase == GAME_PHASE.STARTED:
+		print("RESET")
+		load_game()
+		
 
 # mode = SERVER/CLIENT
 func create_connection(mode, ip=null, port=null):
@@ -51,6 +58,7 @@ func create_connection(mode, ip=null, port=null):
 	var err = null
 	if mode == "SERVER":
 		err = network.create_server(SERVER_PORT, MAX_PLAYERS-1)
+		set_process_input(true) # enable inputs to allow doing game reset
 	else:
 		err = network.create_client(ip, port)
 	if err:
@@ -107,7 +115,7 @@ remote func create_viewer():
 func _player_disconnected(peer_id):
 	print("Disconnected: " + str(peer_id))
 	players_info.erase(peer_id)
-	var player_to_delete = world.get_node_or_null(str(peer_id))
+	var player_to_delete = world.get_map().get_node_or_null(str(peer_id))
 	if player_to_delete:
 		player_to_delete.queue_free()
 
@@ -130,6 +138,7 @@ func send_info(player_info):
 func load_game():
 	game_phase = GAME_PHASE.LOADING
 	players_loading = len(players_info.keys())
+	players_ready = 0
 	rpc("prepare_game")
 
 

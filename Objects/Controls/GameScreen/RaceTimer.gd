@@ -11,7 +11,7 @@ func _ready():
 
 func start():
 	if not Networking.debug:
-		var player = world.get_node(str(Networking.my_peer_id))
+		var player = world.get_map().get_node(str(Networking.my_peer_id))
 		player.immobilize()
 		# warning-ignore:return_value_discarded
 		connect("start_race", player, "run")
@@ -38,5 +38,5 @@ func next_text():
 	else:
 		$Timer.stop()
 		$Tween.stop_all()
-		queue_free()
+		queue_free() # to change
 	
