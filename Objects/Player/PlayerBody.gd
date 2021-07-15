@@ -106,7 +106,7 @@ func _integrate_forces(state):
 
 
 func set_boost():
-	if thrust_ray.is_colliding():
+	if thrust_ray.is_colliding() and thrust.x >= 0:
 		var col_point = thrust_ray.get_collision_point()
 		var distance = position.distance_to(col_point)
 		thrust.x += 50*engine_thrust/distance
