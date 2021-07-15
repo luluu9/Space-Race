@@ -16,7 +16,7 @@ texture = ExtResource( 1 )
 polygon = PoolVector2Array( -27.3479, 11.0625, -16.2574, 8.70277, -7.52657, -2.15178, 1.20427, -20.0854, 3.79993, -18.6696, 1.44025, -11.1186, 4.0359, -3.33163, 10.643, 7.28696, 26.9249, 11.7704, 23.6213, 17.1976, -11.0661, 20.2652, -27.8199, 15.3099 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 30.0
+wait_time = 15.0
 
 [connection signal="body_entered" from="." to="." method="_on_Banana_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
