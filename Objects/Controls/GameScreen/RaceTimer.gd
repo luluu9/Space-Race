@@ -15,13 +15,14 @@ func _ready():
 # immobilize the player and start count down
 func start():
 	if not Networking.debug:
-		var player = world.get_map().get_node(str(Networking.my_peer_id))
-		player.immobilize()
-		# warning-ignore:return_value_discarded
-		connect("start_race", player, "run")
-		self.visible = true
-		next_text()
-		$Timer.start()
+		var player = world.get_map().get_node_or_null(str(Networking.my_peer_id))
+		if player:
+			player.immobilize()
+			# warning-ignore:return_value_discarded
+			connect("start_race", player, "run")
+			self.visible = true
+			next_text()
+			$Timer.start()
 
 
 # on each timeout change text
