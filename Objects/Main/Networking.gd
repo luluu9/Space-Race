@@ -4,7 +4,7 @@ signal connection_created(mode)
 signal game_started
 signal info_updated(updated_info)
 
-enum GAME_PHASE {INIT, LOBBY, LOADING, STARTED}
+enum GAME_PHASE {INIT, LOBBY, LOADING, STARTED, WATCHING}
 
 export (bool) var debug = false
 
@@ -111,6 +111,7 @@ remote func replicate(node_path, node_resource):
 remote func create_viewer():
 	var viewer = viewer_scene.instance()
 	add_child(viewer)
+	game_phase = GAME_PHASE.WATCHING
 
 
 func _player_disconnected(peer_id):
@@ -162,6 +163,8 @@ remotesync func prepare_game():
 #					new_player.nick = player_info[peer_id][info_key]
 		world.add_player(new_player, peer_id)
 		new_player.online(peer_id)
+	if game_phase == GAME_PHASE.WATCHING:
+		get_node("ViewerCamera").queue_free()
 	rpc_id(1, "player_ready", my_peer_id)
 
 
