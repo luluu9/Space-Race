@@ -1,7 +1,7 @@
-extends "../RemoteArea2D.gd"
+extends Area2D
 
 var speed = 1000
-var hit_force = 100
+var hit_force = 250
 var ally_name = "0" # not any peer can have 0 as peer id so it's OK to initialize
 
 var velocity = Vector2()
@@ -16,15 +16,10 @@ func start(_transform, ammo_id, peer_id_str):
 
 
 func _physics_process(delta):
-	if is_network_master():
-		position += velocity * delta
-		rset_unreliable("remote_transform", transform)
-		rset_unreliable("remote_velocity", velocity)
-	else:
-		extrapolate_velocity(delta)
+	position += velocity * delta
 
 
-# destroy laser when enters on body and affect player
+# destroy laser when enters on body and affect a player
 func _on_Laser_body_entered(body):
 	if body.name == "Map":
 		queue_free()
@@ -34,6 +29,6 @@ func _on_Laser_body_entered(body):
 		queue_free()
 
 
-# destroy laser after some time if it wasn't destroyed by wall
+# destroy laser after some time if it wasn't destroyed by a wall
 func _on_Timer_timeout():
 	queue_free()
