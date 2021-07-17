@@ -10,6 +10,7 @@
 extents = Vector2( 69.6875, 133.125 )
 
 [node name="Map" type="StaticBody2D"]
+collision_mask = 0
 script = ExtResource( 1 )
 start_direction = 0
 
