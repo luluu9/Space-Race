@@ -10,6 +10,7 @@ var thrust = Vector2()
 var side_vector = Vector2(1, -2)
 var rotation_dir = 0
 var spin_thrust = initial_spin_thrust
+var color = Color() setget set_color
 
 onready var thrust_ray = get_node("RayCast2D")
 onready var right_ray = get_node("RayCast2D2")
@@ -204,6 +205,11 @@ func immobilize():
 
 func run():
 	set_use_custom_integrator(false)
+
+
+func set_color(_color):
+	get_node("ship_wings").self_modulate = _color
+	color = _color
 
 
 remote func request_replication_info(peer_id):

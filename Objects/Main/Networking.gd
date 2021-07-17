@@ -158,7 +158,7 @@ remotesync func prepare_game():
 		for info_key in players_info[peer_id]:
 			match info_key:
 				"color":
-					new_player.get_node("ship_wings").self_modulate = players_info[peer_id][info_key]
+					new_player.color = players_info[peer_id][info_key]
 #				"nick":
 #					new_player.nick = player_info[peer_id][info_key]
 		world.add_player(new_player, peer_id)
