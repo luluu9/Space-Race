@@ -32,8 +32,8 @@ func _ready():
 	set_process_input(false)
 	if world: # if null it means that specific scene is running
 		if debug:
-			var my_id = debug_create_connection()
-			debug_create_player(my_id)
+			my_peer_id = debug_create_connection()
+			debug_create_player(my_peer_id)
 		else:
 			world.get_title_screen().connect("connect", self, "create_connection")
 			world.get_title_screen().connect("host", self, "create_connection")
