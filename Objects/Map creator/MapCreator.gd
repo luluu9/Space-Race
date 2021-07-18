@@ -83,7 +83,7 @@ func _input(event):
 		create_start_line()
 	
 	if start_line_editing:
-		var start_line_size = mouse_pos - current_start_line.position
+		var start_line_size = grid.get_snap_point(mouse_pos) - current_start_line.position
 		current_start_line.change_size(start_line_size)
 		if lmb: # stop editing start line
 			start_line_editing = false
