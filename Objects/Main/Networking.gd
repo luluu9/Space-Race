@@ -195,7 +195,7 @@ func debug_create_connection():
 
 func debug_create_player(peer_id):
 	var player_node = player_scene.instance()
-	world.add_child(player_node)
+	world.get_map().add_child(player_node)
 	player_node.online(peer_id)
 
 
