@@ -189,9 +189,12 @@ func save_map(map_name):
 	current_map.name = map_name
 	var packed_map = PackedScene.new()
 	packed_map.pack(current_map)
-	ResourceSaver.save("res://Objects/Maps/" + map_name + ".tscn", packed_map)
-	popup.hide()
-	create_map()
+	var err = ResourceSaver.save("res://Objects/Maps/" + map_name + ".tscn", packed_map)
+	if err:
+		push_error("Can't save this map!")
+	else:
+		popup.hide()
+		create_map()
 
 
 # for naming current map to save
