@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-enum Item {NONE=-1, HOMING_MISSILE, BANANA}
+enum Item {NONE=-1, HOMING_MISSILE, BANANA, LASER}
 
 export (int) var engine_thrust = 800 # defines max speed
 export (int) var initial_spin_thrust = 10000
@@ -10,7 +10,7 @@ var thrust = Vector2()
 var side_vector = Vector2(1, -2)
 var rotation_dir = 0
 var spin_thrust = initial_spin_thrust
-var color = Color() setget set_color
+var color = Color(255, 255, 255) setget set_color
 
 onready var thrust_ray = get_node("RayCast2D")
 onready var right_ray = get_node("RayCast2D2")
@@ -23,6 +23,7 @@ onready var homing_missile_scene = load("res://Objects/Items/HomingMissile/Homin
 onready var missile_effect_rect = get_node("MissileEffect/ColorRect")
 onready var item_texture_container = get_node("PlayerUI/ItemPanel/ItemContainer")
 onready var banana_scene = load("res://Objects/Items/Banana/Banana.tscn")
+onready var laser_scene = load("res://Objects/Items/Laser/Laser.tscn")
 
 puppet var remote_transform = Transform2D()
 puppet var remote_angular_velocity = 0.0
@@ -33,6 +34,7 @@ var updated = false
 var missiles_target = []
 
 var current_item = Item.NONE
+var laser_ammo = 0 setget set_laser_ammo
 
 var replication_vars = ["modulate"]
 
@@ -57,14 +59,18 @@ func _input(_event):
 	if Input.is_action_just_pressed("USE_ITEM"):
 		match current_item:
 			Item.HOMING_MISSILE:
-				rpc("shoot")
+				rpc("shoot_missile")
 			Item.BANANA:
 				rpc("drop_banana")
+			Item.LASER:
+				rpc("shoot_laser", laser_ammo)
+				set_laser_ammo(laser_ammo-1)
+				return
 		current_item = Item.NONE
 		item_texture_container.texture = null
 
 
-remotesync func shoot():
+remotesync func shoot_missile():
 	var missile = homing_missile_scene.instance()
 	missile.start(transform, self)
 	get_parent().call_deferred("add_child", missile)
@@ -75,6 +81,15 @@ remotesync func drop_banana():
 	banana.caller = self
 	banana.position = position
 	get_parent().add_child(banana)
+
+
+# we need ammo_id to be sure that each peer has same name of lasers 
+# (they can be different if more than one are shooted in same time
+remotesync func shoot_laser(ammo_id):
+	var laser = laser_scene.instance()
+	laser.modulate = color
+	laser.start(transform, ammo_id, name)
+	get_parent().add_child(laser)
 
 
 func set_fov():
@@ -196,6 +211,9 @@ func set_item(item):
 				texture = load("res://Objects/Items/Banana/Banana.png")
 			Item.HOMING_MISSILE:
 				texture = load("res://Objects/Items/HomingMissile/Missile.png")
+			Item.LASER:
+				set_laser_ammo(5)
+				return # to prevent changing an item texture to null
 		item_texture_container.texture = texture
 
 
@@ -208,8 +226,20 @@ func run():
 
 
 func set_color(_color):
-	get_node("ship_wings").self_modulate = _color
 	color = _color
+	get_node("ship_wings").self_modulate = color
+	
+
+
+func set_laser_ammo(_laser_ammo):
+	if is_network_master():
+		laser_ammo = _laser_ammo
+		if laser_ammo == 0:
+			current_item = Item.NONE
+			item_texture_container.texture = null
+		else:
+			var texture = load("res://Objects/Items/Laser/Laser_ammo_" + str(laser_ammo) + ".png")
+			item_texture_container.texture = texture
 
 
 remote func request_replication_info(peer_id):
