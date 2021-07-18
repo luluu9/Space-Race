@@ -7,6 +7,8 @@ var SNAP_MARGIN = 5 # on one side, totally SNAP_MARGIN * 2
 
 var VECTOR_ZOOM = Vector2(0.5, 0.5)
 
+var original_pos = Vector2()
+var middle_button_pressed = false
 
 func _unhandled_input(event):
 	if event is InputEventKey:
@@ -34,6 +36,20 @@ func _unhandled_input(event):
 				position = (position - mouse_pos) * new_zoom / zoom + mouse_pos
 				zoom = new_zoom
 				update()
+			if event.button_index == BUTTON_MIDDLE:
+				middle_button_pressed = true
+				original_pos = mouse_pos
+		else: # it means that button is released
+			if event.button_index == BUTTON_MIDDLE: 
+				middle_button_pressed = false
+
+
+func _process(delta):
+	if middle_button_pressed:
+		var mouse_pos = get_global_mouse_position()
+		# add because original_pos changes on each mouse movement 
+		position += original_pos - mouse_pos 
+		update()
 
 
 func draw_grid():
